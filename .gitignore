@@ -1,0 +1,95 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+local_settings.py
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+/media/
+/mediafiles/
+/staticfiles/
+/static_root/
+celerybeat-schedule
+celerybeat.pid
+*.mo
+
+# Empaquetado / distribución
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+wheels/
+pip-wheel-metadata/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Tests y cobertura
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+nosetests.xml
+*.cover
+
+# Cachés de herramientas
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.dmypy.json
+.ipynb_checkpoints/
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Sistema operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Claude Code (configuración local)
+.claude/settings.local.json
+
+# Material de diseño (no forma parte del código)
+design_handoff_codice_django/
+
+# Copias de seguridad y temporales
+*.bak
+*.tmp
+*.orig
+dumps/
+*.sql
+*.dump
