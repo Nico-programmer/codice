@@ -1,0 +1,2 @@
+{# Mensajes de django.contrib.messages como avisos. Tags: success, warning, error, info #}
+{% for m in messages %}{% include "components/alert.html" with tone=m.tags text=m.message %}{% endfor %}

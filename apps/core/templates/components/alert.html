@@ -1,0 +1,5 @@
+{# with tone(info/success/warning/error) title text #}
+<div class="alert alert--{{ tone|default:'info' }}" role="{% if tone == 'error' %}alert{% else %}status{% endif %}">
+  {% if tone == 'error' %}{% include "components/icon.html" with name="circle-alert" class="icon--sm" %}{% elif tone == 'warning' %}{% include "components/icon.html" with name="triangle-alert" class="icon--sm" %}{% elif tone == 'success' %}{% include "components/icon.html" with name="circle-check" class="icon--sm" %}{% else %}{% include "components/icon.html" with name="info" class="icon--sm" %}{% endif %}
+  <div class="alert__body">{% if title %}<span class="alert__title">{{ title }}</span>{% endif %}{% if text %}<span>{{ text }}</span>{% endif %}</div>
+</div>

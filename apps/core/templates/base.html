@@ -1,0 +1,29 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Codice{% endblock %} · Codice</title>
+  <link rel="icon" href="{% static 'assets/logo/codice-simbolo.svg' %}">
+  <link rel="stylesheet" href="{% static 'css/codice.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  {% include "partials/icon_sprite.svg" %}
+  <div class="app">
+    {% include "partials/sidebar.html" %}
+    <div class="main">
+      {% include "partials/topbar.html" %}
+      <main class="page {% block page_class %}{% endblock %}" id="contenido">
+        {% include "components/messages.html" %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  {% include "partials/bottom_nav.html" %}
+  {% block after_page %}{% endblock %}
+  {% block overlays %}{% endblock %}
+  <script src="{% static 'js/codice.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

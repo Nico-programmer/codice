@@ -1,0 +1,15 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Iniciar sesión{% endblock %} · Codice</title>
+  <link rel="icon" href="{% static 'assets/logo/codice-simbolo.svg' %}">
+  <link rel="stylesheet" href="{% static 'css/codice.css' %}">
+</head>
+<body>
+  {% include "partials/icon_sprite.svg" %}
+  <main class="auth">{% block content %}{% endblock %}</main>
+  <script src="{% static 'js/codice.js' %}" defer></script>
+</body>
+</html>
