@@ -86,6 +86,9 @@ $RECYCLE.BIN/
 # Material de diseño (no forma parte del código)
 design_handoff_codice_django/
 
+# Instrucciones
+TODO.md
+
 # Copias de seguridad y temporales
 *.bak
 *.tmp
