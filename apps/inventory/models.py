@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.conf import settings
+from django.core.exceptions import ValidationError
 
 class Product(models.Model):
     class IvaRate(models.IntegerChoices):
@@ -46,3 +48,47 @@ class Stock(models.Model):
         ]
         verbose_name = 'Existencia'
         verbose_name_plural = 'Existencias'
+
+class Movement(models.Model):
+    class MovementType(models.TextChoices):
+        ENTRADA = 'entrada', 'Entrada'
+        SALIDA = 'salida', 'Salida'
+        AJUSTE = 'ajuste', 'Ajuste'
+
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='movements')
+    branch = models.ForeignKey('companies.Branch', on_delete=models.PROTECT, related_name='movements')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='movements')
+    type = models.CharField(max_length=10, choices=MovementType.choices, verbose_name="Tipo")
+    # Con signo: entrada positiva, salida negativa, ajuste positivo o negativo.
+    quantity = models.IntegerField(verbose_name="Cantidad")
+    reason = models.CharField(max_length=255, blank=True, verbose_name="Motivo")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
+
+    def __str__(self):
+        return f'{self.get_type_display()} de {self.quantity} {self.product} en {self.branch}'
+
+    def clean(self):
+        super().clean()
+        if self.product_id and self.branch_id and self.product.company_id != self.branch.company_id:
+            raise ValidationError({'branch': 'La sucursal no pertenece a la empresa del producto.'})
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Movimiento'
+        verbose_name_plural = 'Movimientos'
+        constraints = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(type='entrada', quantity__gt=0)
+                    | models.Q(type='salida', quantity__lt=0)
+                    | (models.Q(type='ajuste') & ~models.Q(quantity=0))
+                ),
+                name='movement_quantity_matches_type',
+                violation_error_message='La cantidad no corresponde al tipo de movimiento.',
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(type='ajuste', reason=''),
+                name='adjustment_requires_reason',
+                violation_error_message='Escribe el motivo del ajuste.',
+            ),
+        ]
