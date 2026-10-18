@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 class Companies(models.Model):
     class DocumentType(models.TextChoices):
@@ -15,7 +16,11 @@ class Companies(models.Model):
     type_person = models.CharField(max_length=20, choices=PersonType.choices, default=PersonType.NAT, verbose_name="Persona")
 
     numero_document = models.CharField(max_length=20, verbose_name="# Documento", unique=True)
-    name = models.CharField(max_length=50, verbose_name="nombre")
+    verification_digit = models.CharField(max_length=1, blank=True, verbose_name="Dígito de verificación")
+    name = models.CharField(max_length=50, verbose_name="Nombre del negocio")
+    legal_name = models.CharField(max_length=150, verbose_name="Razón Social")
+    city = models.CharField(max_length=100, verbose_name="Ciudad")
+    address = models.CharField(max_length=150, verbose_name="Dirección")
     phone = models.CharField(max_length=14, verbose_name="Telefono") # Incluye el +57
     email = models.EmailField(verbose_name="Correo electronico")
 
@@ -38,6 +43,8 @@ class Branch(models.Model):
     headquarters = models.CharField(max_length=100, verbose_name="Sede")
     address = models.CharField(max_length=100, verbose_name="Dirección")
     city = models.CharField(max_length=100, verbose_name="Ciudad")
+    phone = models.CharField(max_length=14, blank=True, verbose_name="Teléfono")
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True, related_name='managed_branches', verbose_name="Encargado")
 
     active = models.BooleanField(default=True, verbose_name="Activa")
 
