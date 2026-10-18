@@ -1,2 +1,30 @@
-{# Mensajes de django.contrib.messages como avisos. Tags: success, warning, error, info #}
-{% for m in messages %}{% include "components/alert.html" with tone=m.tags text=m.message %}{% endfor %}
+{% comment %}
+  Mensajes de django.contrib.messages (success, warning, error, info) como ventana de SweetAlert2.
+  Los avisos que van dentro de un formulario o panel (por ejemplo "Hay 4 bultos...") siguen usando components/alert.html.
+  Si SweetAlert no carga, los mensajes se quedan visibles como avisos normales.
+{% endcomment %}
+{% if messages %}
+<div id="mensajes-sistema">
+  {% for m in messages %}{% include "components/alert.html" with tone=m.tags text=m.message %}{% endfor %}
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", async function () {
+    if (!window.Swal) return;
+    var contenedor = document.getElementById("mensajes-sistema");
+    var mensajes = Array.prototype.map.call(contenedor.querySelectorAll(".alert"), function (el) {
+      var tono = (el.className.match(/alert--(\w+)/) || [])[1] || "info";
+      return { icon: tono === "error" ? "error" : tono, text: el.querySelector(".alert__body").textContent.trim() };
+    });
+    contenedor.hidden = true;
+    for (var i = 0; i < mensajes.length; i++) {
+      await Swal.fire({
+        icon: mensajes[i].icon,
+        text: mensajes[i].text,
+        confirmButtonText: "Entendido",
+        buttonsStyling: false,
+        customClass: { popup: "swal-codice", confirmButton: "btn btn--primary btn--lg" }
+      });
+    }
+  });
+</script>
+{% endif %}
