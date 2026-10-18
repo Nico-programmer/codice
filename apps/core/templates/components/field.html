@@ -1,0 +1,12 @@
+{% comment %}
+  Campo de formulario Django con el estilo del diseño.
+  Uso: {% include "components/field.html" with field=form.name hint="..." span_all=True %}
+  La clase input / select / textarea la pone el filtro |styled (apps/core/templatetags/form_tags.py).
+{% endcomment %}
+{% load form_tags %}
+<div class="field{% if field.errors %} field--error{% endif %}{% if span_all %} span-all{% endif %}">
+  <label class="field__label" for="{{ field.id_for_label }}">{{ label|default:field.label }}{% if field.field.required %} <span class="field__req">*</span>{% else %} <span class="field__optional">(opcional)</span>{% endif %}</label>
+  {{ field|styled }}
+  {% if hint or field.help_text %}<span class="field__hint">{{ hint|default:field.help_text }}</span>{% endif %}
+  {% for e in field.errors %}<span class="field__error" id="{{ field.id_for_label }}-error">{% include "components/icon.html" with name="circle-alert" class="icon--xs" %}{{ e }}</span>{% endfor %}
+</div>

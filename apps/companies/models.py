@@ -15,7 +15,7 @@ class Companies(models.Model):
     document = models.CharField(max_length=30, choices=DocumentType.choices, default=DocumentType.NIT, verbose_name="Documento")
     type_person = models.CharField(max_length=20, choices=PersonType.choices, default=PersonType.NAT, verbose_name="Persona")
 
-    numero_document = models.CharField(max_length=20, verbose_name="# Documento", unique=True)
+    number_document = models.CharField(max_length=20, verbose_name="# Documento", unique=True)
     verification_digit = models.CharField(max_length=1, blank=True, verbose_name="Dígito de verificación")
     name = models.CharField(max_length=50, verbose_name="Nombre del negocio")
     legal_name = models.CharField(max_length=150, verbose_name="Razón Social")
@@ -34,7 +34,7 @@ class Companies(models.Model):
         return self.end_date_subscription is not None and self.end_date_subscription >= timezone.now()
 
     def __str__(self):
-        return f'{self.numero_document} - {self.name}'
+        return f'{self.number_document} - {self.name}'
 
 
 class Branch(models.Model):

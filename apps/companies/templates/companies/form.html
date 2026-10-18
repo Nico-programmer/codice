@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}{% if object %}Editar empresa{% else %}Nueva empresa{% endif %}{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div>
+    <div class="breadcrumb"><a href="{% url 'companies:list' %}">Empresas</a>{% include "components/icon.html" with name="chevron-right" class="icon--xs" %}<span>{% if object %}{{ object.name }}{% else %}Nueva empresa{% endif %}</span></div>
+    <h1 class="page-header__title">{% if object %}Editar empresa{% else %}Nueva empresa{% endif %}</h1>
+    <p class="page-header__subtitle">Datos que aparecerán en las facturas. Los campos con * son obligatorios.</p>
+  </div>
+</header>
+
+<form method="post" class="card form" novalidate style="max-width:960px">{% csrf_token %}
+  {% if form.non_field_errors %}
+  <div class="alert alert--error" role="alert">
+    {% include "components/icon.html" with name="circle-alert" class="icon--sm" %}
+    <div class="alert__body">{% for e in form.non_field_errors %}<span>{{ e }}</span>{% endfor %}</div>
+  </div>
+  {% endif %}
+
+  <div class="form-section">
+    <h2 class="form-section__title">Datos del negocio</h2>
+    <div class="form-grid">
+      {% include "components/field.html" with field=form.name label="Nombre del negocio" hint="Así lo conocen sus clientes." %}
+      {% include "components/field.html" with field=form.legal_name label="Razón social" hint="Como aparece en el RUT." %}
+      {% include "components/field.html" with field=form.type_person label="Tipo de persona" %}
+      {% include "components/field.html" with field=form.document label="Tipo de documento" %}
+      {% include "components/field.html" with field=form.number_document label="Número de documento" hint="Solo números, sin puntos ni dígito de verificación." %}
+      <div id="campo-dv">
+        {% include "components/field.html" with field=form.verification_digit label="Dígito de verificación" hint="Solo para NIT." %}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2 class="form-section__title">Ubicación y contacto</h2>
+    <div class="form-grid">
+      {% include "components/field.html" with field=form.city label="Ciudad" %}
+      {% include "components/field.html" with field=form.address label="Dirección" %}
+      {% include "components/field.html" with field=form.phone label="Teléfono" %}
+      {% include "components/field.html" with field=form.email label="Correo para facturas" hint="Aquí llegan las respuestas de la DIAN." %}
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2 class="form-section__title">Suscripción a Codice</h2>
+    <p class="form-section__text">Cuando pase la fecha de vencimiento, los usuarios de esta empresa no podrán entrar.</p>
+    <div class="form-grid">
+      {% for f in form %}{% if f.name == 'start_date_subscription' or f.name == 'end_date_subscription' %}
+      <div class="field{% if f.errors %} field--error{% endif %}">
+        <label class="field__label" for="{{ f.id_for_label }}">{% if f.name == 'start_date_subscription' %}Inicio{% else %}Vencimiento{% endif %}{% if f.field.required %} <span class="field__req">*</span>{% else %} <span class="field__optional">(opcional)</span>{% endif %}</label>
+        <input class="input" type="datetime-local" id="{{ f.id_for_label }}" name="{{ f.html_name }}" value="{{ f.value|date:'Y-m-d\TH:i'|default:f.value|default:'' }}"{% if f.errors %} aria-invalid="true" aria-describedby="{{ f.id_for_label }}-error"{% endif %}>
+        {% for e in f.errors %}<span class="field__error" id="{{ f.id_for_label }}-error">{% include "components/icon.html" with name="circle-alert" class="icon--xs" %}{{ e }}</span>{% endfor %}
+      </div>
+      {% endif %}{% endfor %}
+    </div>
+  </div>
+
+  <div class="cluster" style="justify-content:flex-end">
+    <a class="btn btn--neutral btn--lg" href="{% url 'companies:list' %}">Cancelar</a>
+    <button type="submit" class="btn btn--primary btn--lg">{% include "components/icon.html" with name="check" class="icon--sm" %}Guardar empresa</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // El dígito de verificación solo aplica cuando el documento es NIT.
+  document.addEventListener("DOMContentLoaded", function () {
+    var tipo = document.getElementById("{{ form.document.id_for_label }}");
+    var campo = document.getElementById("campo-dv");
+    function actualizar() { campo.hidden = tipo.value !== "nit"; }
+    tipo.addEventListener("change", actualizar);
+    actualizar();
+  });
+</script>
+{% endblock %}

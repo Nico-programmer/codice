@@ -7,4 +7,4 @@
 }
 .swal-codice .swal2-title { font-family: var(--font-head); font-weight: 600; color: var(--c-text); }
 .swal-codice .swal2-html-container { font-size: var(--fs-lg); color: var(--c-text-2); }
-.swal-codice .swal2-actions { margin-top: 24px; }
+.swal-codice .swal2-actions { margin-top: 24px; gap: 12px; }
