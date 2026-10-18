@@ -1,3 +1,20 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
-# Create your views here.
+from django.http import Http404
+
+REPORT_TEMPLATES = {
+    'ventas': 'reports/sales.html',
+    'compras': 'reports/purchases.html',
+    'entradas': 'reports/entries.html',
+    'salidas': 'reports/exits.html',
+    'ajustes': 'reports/adjustments.html',
+    'facturas-electronicas': 'reports/electronic_invoices.html',
+}
+
+class ReportDetailView(LoginRequiredMixin, TemplateView):
+    def get_template_names(self):
+        template = REPORT_TEMPLATES.get(self.kwargs['report'])
+        if template is None:
+            raise Http404('Ese reporte no existe')
+        return [template]
