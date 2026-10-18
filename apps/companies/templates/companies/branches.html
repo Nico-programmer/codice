@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Sucursales{% endblock %}
+
+{% block content %}
+<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'users:list' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#users"></use></svg>Usuarios</a><a class="tab" href="{% url 'companies:list' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#building-2"></use></svg>Empresas</a><a class="tab is-active" href="{% url 'companies:branches' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#store"></use></svg>Sucursales</a></nav>
+<header class="page-header">
+  <div>
+    <h1 class="page-header__title">Sucursales</h1>
+    <p class="page-header__subtitle">Puntos de venta y bodegas</p>
+  </div>
+  <div class="page-header__actions">
+    <button type="button" class="btn btn--primary btn--lg" data-open="#drawer-sucursal"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg>Nueva sucursal</button>
+  </div>
+</header>
+<section class="card">
+  <div class="toolbar">
+    <div class="field toolbar__search"><label class="field__label" for="q">Buscar</label><div class="input-wrap"><svg class="icon" aria-hidden="true"><use href="#search"></use></svg><input class="input" id="q" type="search" placeholder="Nombre o dirección"></div></div>
+    <div class="field toolbar__filter"><label class="field__label" for="empresa">Empresa</label><select class="select" id="empresa" name="empresa"><option selected>Todas</option><option>Ferretería El Tornillo</option><option>Depósito La Esquina</option></select></div>
+    <div class="field toolbar__filter"><label class="field__label" for="estado">Estado</label><select class="select" id="estado" name="estado"><option selected>Todas</option><option>Activas</option><option>Inactivas</option></select></div>
+  </div>
+  <div class="table-wrap">
+    <table class="table table--stack">
+      <thead><tr><th>Sucursal</th><th>Dirección</th><th>Teléfono</th><th>Encargado</th><th>Estado</th><th class="text-right">Acciones</th></tr></thead>
+      <tbody>
+        <tr><td class="is-primary" data-label="Sucursal"><span class="cell-main">El Tornillo · Centro</span><span class="cell-sub">Ferretería El Tornillo</span></td><td data-label="Dirección"><span class="cell-main" style="font-weight:600">Cra. 50 #45-12</span><span class="cell-sub">Medellín</span></td><td class="is-muted tnum" data-label="Teléfono">604 444 5566</td><td class="is-muted" data-label="Encargado">Carolina Restrepo</td><td data-label="Estado"><span class="badge badge--success">Activa</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-sucursal"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
+        <tr><td class="is-primary" data-label="Sucursal"><span class="cell-main">El Tornillo · Belén</span><span class="cell-sub">Ferretería El Tornillo</span></td><td data-label="Dirección"><span class="cell-main" style="font-weight:600">Cl. 30A #76-41</span><span class="cell-sub">Medellín</span></td><td class="is-muted tnum" data-label="Teléfono">604 342 1100</td><td class="is-muted" data-label="Encargado">Paola Andrea Zapata</td><td data-label="Estado"><span class="badge badge--success">Activa</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-sucursal"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
+        <tr><td class="is-primary" data-label="Sucursal"><span class="cell-main">El Tornillo · Envigado</span><span class="cell-sub">Ferretería El Tornillo</span></td><td data-label="Dirección"><span class="cell-main" style="font-weight:600">Cra. 43A #38 Sur-20</span><span class="cell-sub">Envigado</span></td><td class="is-muted tnum" data-label="Teléfono">604 331 2299</td><td class="is-muted" data-label="Encargado">Juan Camilo Henao</td><td data-label="Estado"><span class="badge badge--success">Activa</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-sucursal"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
+        <tr class="is-inactive"><td class="is-primary" data-label="Sucursal"><span class="cell-main">La Esquina · Bello</span><span class="cell-sub">Depósito La Esquina</span></td><td data-label="Dirección"><span class="cell-main" style="font-weight:600">Cl. 52 #49-30</span><span class="cell-sub">Bello</span></td><td class="is-muted tnum" data-label="Teléfono">604 275 8899</td><td class="is-muted" data-label="Encargado">—</td><td data-label="Estado"><span class="badge badge--neutral">Inactiva</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-sucursal"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--secondary btn--sm"><svg class="icon icon--sm" aria-hidden="true"><use href="#rotate-ccw"></use></svg>Reactivar</button></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block overlays %}
+<div class="overlay" id="drawer-sucursal" role="dialog" aria-modal="true" aria-labelledby="drawer-sucursal-title">
+  <aside class="drawer">
+    <div class="drawer__header">
+      <div><h2 class="drawer__title" id="drawer-sucursal-title">Editar sucursal</h2><p class="drawer__subtitle">El Tornillo · Envigado</p></div>
+      <button type="button" class="btn btn--icon btn--sm btn--neutral" aria-label="Cerrar" title="Cerrar" data-close><svg class="icon icon--sm" aria-hidden="true"><use href="#x"></use></svg></button>
+    </div>
+    <form method="post" class="drawer__body" novalidate>{% csrf_token %}
+      <div class="field">
+  <label class="field__label" for="s-nombre">Nombre de la sucursal <span class="field__req">*</span></label>
+  <input class="input" id="s-nombre" name="s-nombre" type="text" value="El Tornillo · Envigado">
+</div>
+      <div class="field">
+  <label class="field__label" for="s-empresa">Empresa <span class="field__req">*</span></label>
+  <select class="select" id="s-empresa" name="s-empresa"><option selected>Ferretería El Tornillo</option><option>Depósito La Esquina</option></select>
+</div>
+      <div class="field">
+  <label class="field__label" for="s-dir">Dirección <span class="field__req">*</span></label>
+  <input class="input" id="s-dir" name="s-dir" type="text" value="Cra. 43A #38 Sur-20">
+</div>
+      <div class="form-grid">
+        <div class="field">
+  <label class="field__label" for="s-ciudad">Ciudad <span class="field__req">*</span></label>
+  <select class="select" id="s-ciudad" name="s-ciudad"><option>Medellín</option><option>Bello</option><option selected>Envigado</option><option>Itagüí</option></select>
+</div>
+        <div class="field">
+  <label class="field__label" for="s-tel">Teléfono</label>
+  <input class="input" id="s-tel" name="s-tel" type="tel" value="604 331 2299">
+</div>
+      </div>
+      <div class="field">
+  <label class="field__label" for="s-encargado">Encargado <span class="field__optional">(opcional)</span></label>
+  <select class="select" id="s-encargado" name="s-encargado"><option>Sin encargado</option><option selected>Juan Camilo Henao</option><option>Luis Fernando Ríos</option><option>Paola Andrea Zapata</option></select>
+</div>
+      <div class="form-section"><h3 class="form-section__title">Estado</h3><div class="cluster"><span class="badge badge--success">Activo</span><span class="text-2">Activa desde el 3 de marzo de 2025.</span></div></div>
+    </form>
+    <div class="drawer__footer">
+      <button type="button" class="btn btn--neutral btn--lg" data-close>Cancelar</button>
+      <button type="button" class="btn btn--primary btn--lg"><svg class="icon icon--sm" aria-hidden="true"><use href="#check"></use></svg>Guardar cambios</button>
+    </div>
+  </aside>
+</div>
+<div class="overlay overlay--center" id="confirmar-inactivar" role="alertdialog" aria-modal="true" aria-labelledby="confirmar-inactivar-title">
+  <div class="modal modal--center">
+    <div class="modal__icon icon-tile--danger"><svg class="icon" aria-hidden="true"><use href="#ban"></use></svg></div>
+    <h2 class="modal__title" id="confirmar-inactivar-title">¿Inactivar esta sucursal?</h2>
+    <p class="modal__text">No se podrán hacer ventas ni movimientos en ella. Su historial se conserva y puedes reactivarla.</p>
+    <div class="modal__actions">
+      <button type="button" class="btn btn--neutral btn--lg" data-close>Cancelar</button>
+      <button type="button" class="btn btn--danger-solid btn--lg" data-close>Sí, inactivar</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

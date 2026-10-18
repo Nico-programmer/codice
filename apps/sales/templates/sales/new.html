@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva venta{% endblock %}
+{% block page_class %}page--checkout{% endblock %}
+
+{% block content %}
+<nav class="tabs" aria-label="Secciones"><a class="tab is-active" href="{% url 'sales:new' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#shopping-cart"></use></svg>Nueva venta</a><a class="tab" href="{% url 'sales:invoices' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#receipt"></use></svg>Facturas</a></nav>
+<header class="page-header">
+  <div>
+    <h1 class="page-header__title">Nueva venta</h1>
+    <p class="page-header__subtitle">El Tornillo · Centro · Caja 1</p>
+  </div>
+  <div class="page-header__actions">
+    <button type="button" class="btn btn--neutral"><svg class="icon icon--sm" aria-hidden="true"><use href="#x"></use></svg>Cancelar venta</button>
+  </div>
+</header>
+
+<div class="grid grid--sale">
+  <div class="stack stack--lg">
+    <section class="card" aria-label="Buscar productos">
+      <div class="field">
+        <label class="field__label" for="buscar-producto">Buscar producto</label>
+        <div class="input-wrap input-wrap--action search-xl"><svg class="icon" aria-hidden="true"><use href="#search"></use></svg><input class="input" id="buscar-producto" type="search" value="pintura" placeholder="Escribe el nombre o el código (ej. cemento, FER-0001)" autocomplete="off"><button type="button" class="btn btn--ghost btn--icon input-wrap__action" aria-label="Leer código de barras"><svg class="icon" aria-hidden="true"><use href="#scan-barcode"></use></svg></button></div>
+      </div>
+      <div class="results" role="listbox" aria-label="Resultados">
+        <div class="results__head">3 productos encontrados</div>
+        <div class="result" role="option">
+          <span class="icon-tile icon-tile--sm hide-sm"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg></span>
+          <div class="result__body"><span class="result__name"><mark>Pintura</mark> vinilo blanco galón</span><span class="result__meta"><span>FER-0004</span><span>Quedan 3 galones</span><span class="badge badge--warning badge--sm">Stock bajo</span></span></div>
+          <span class="result__price">$64.900</span>
+          <button type="button" class="btn btn--secondary" aria-label="Agregar Pintura vinilo blanco galón"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg><span class="hide-sm">Agregar</span></button>
+        </div>
+        <div class="result" role="option">
+          <span class="icon-tile icon-tile--sm hide-sm"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg></span>
+          <div class="result__body"><span class="result__name"><mark>Pintura</mark> vinilo blanco cuñete 5 gal</span><span class="result__meta"><span>FER-0012</span><span>Quedan 6 cuñetes</span></span></div>
+          <span class="result__price">$289.000</span>
+          <button type="button" class="btn btn--secondary" aria-label="Agregar Pintura vinilo blanco cuñete 5 gal"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg><span class="hide-sm">Agregar</span></button>
+        </div>
+        <div class="result" role="option">
+          <span class="icon-tile icon-tile--sm hide-sm"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg></span>
+          <div class="result__body"><span class="result__name"><mark>Pintura</mark> esmalte negro 1/4 galón</span><span class="result__meta"><span>FER-0013</span><span>Quedan 12 unidades</span></span></div>
+          <span class="result__price">$24.500</span>
+          <button type="button" class="btn btn--secondary" aria-label="Agregar Pintura esmalte negro 1/4 galón"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg><span class="hide-sm">Agregar</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Productos en esta venta">
+      <div class="card__header"><h2 class="card__title">Productos en esta venta</h2><span class="tag tag--plain">4 productos</span></div>
+      <div>
+        <div class="cart-head"><span>Producto</span><span>Cantidad</span><span class="text-right">Subtotal</span><span></span></div>
+        <div class="cart-item">
+          <div class="cart-item__info"><div class="cart-item__name">Cemento gris 50 kg</div><div class="cart-item__meta">FER-0001 · $32.900 c/u</div><div class="cart-item__warn"><svg class="icon icon--xs" aria-hidden="true"><use href="#triangle-alert"></use></svg>Solo quedan 4 bultos en esta sucursal</div></div>
+          <div class="qty"><button type="button" class="qty__btn" data-qty="-" aria-label="Quitar uno"><svg class="icon icon--sm" aria-hidden="true"><use href="#minus"></use></svg></button><input class="qty__input" type="number" min="1" value="3" aria-label="Cantidad"><button type="button" class="qty__btn" data-qty="+" aria-label="Agregar uno"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg></button></div>
+          <div class="cart-item__total">$98.700</div>
+          <div class="cart-item__remove"><button type="button" class="btn btn--icon btn--sm btn--ghost" aria-label="Quitar de la venta" title="Quitar de la venta"><svg class="icon icon--sm" aria-hidden="true"><use href="#trash-2"></use></svg></button></div>
+        </div>
+        <div class="cart-item">
+          <div class="cart-item__info"><div class="cart-item__name">Llave de paso 1/2"</div><div class="cart-item__meta">FER-0007 · $22.900 c/u</div></div>
+          <div class="qty"><button type="button" class="qty__btn" data-qty="-" aria-label="Quitar uno"><svg class="icon icon--sm" aria-hidden="true"><use href="#minus"></use></svg></button><input class="qty__input" type="number" min="1" value="2" aria-label="Cantidad"><button type="button" class="qty__btn" data-qty="+" aria-label="Agregar uno"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg></button></div>
+          <div class="cart-item__total">$45.800</div>
+          <div class="cart-item__remove"><button type="button" class="btn btn--icon btn--sm btn--ghost" aria-label="Quitar de la venta" title="Quitar de la venta"><svg class="icon icon--sm" aria-hidden="true"><use href="#trash-2"></use></svg></button></div>
+        </div>
+        <div class="cart-item">
+          <div class="cart-item__info"><div class="cart-item__name">Pintura vinilo blanco galón</div><div class="cart-item__meta">FER-0004 · $64.900 c/u</div></div>
+          <div class="qty"><button type="button" class="qty__btn" data-qty="-" aria-label="Quitar uno"><svg class="icon icon--sm" aria-hidden="true"><use href="#minus"></use></svg></button><input class="qty__input" type="number" min="1" value="1" aria-label="Cantidad"><button type="button" class="qty__btn" data-qty="+" aria-label="Agregar uno"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg></button></div>
+          <div class="cart-item__total">$64.900</div>
+          <div class="cart-item__remove"><button type="button" class="btn btn--icon btn--sm btn--ghost" aria-label="Quitar de la venta" title="Quitar de la venta"><svg class="icon icon--sm" aria-hidden="true"><use href="#trash-2"></use></svg></button></div>
+        </div>
+        <div class="cart-item">
+          <div class="cart-item__info"><div class="cart-item__name">Brocha 3"</div><div class="cart-item__meta">FER-0008 · $7.900 c/u</div></div>
+          <div class="qty"><button type="button" class="qty__btn" data-qty="-" aria-label="Quitar uno"><svg class="icon icon--sm" aria-hidden="true"><use href="#minus"></use></svg></button><input class="qty__input" type="number" min="1" value="2" aria-label="Cantidad"><button type="button" class="qty__btn" data-qty="+" aria-label="Agregar uno"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg></button></div>
+          <div class="cart-item__total">$15.800</div>
+          <div class="cart-item__remove"><button type="button" class="btn btn--icon btn--sm btn--ghost" aria-label="Quitar de la venta" title="Quitar de la venta"><svg class="icon icon--sm" aria-hidden="true"><use href="#trash-2"></use></svg></button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="stack stack--lg sticky-side">
+    <section class="card" aria-label="Cliente">
+      <h2 class="card__title">Cliente</h2>
+      <div class="choices choices--2" role="radiogroup" aria-label="Tipo de cliente">
+        <label class="choice"><input class="choice__input" type="radio" name="cliente-tipo"><span class="choice__box"><span class="choice__title"><svg class="icon icon--sm" aria-hidden="true"><use href="#user"></use></svg>Consumidor final</span><span class="choice__desc">Sin datos del cliente</span></span></label>
+        <label class="choice"><input class="choice__input" type="radio" name="cliente-tipo" checked><span class="choice__box"><span class="choice__title"><svg class="icon icon--sm" aria-hidden="true"><use href="#users"></use></svg>Cliente con datos</span><span class="choice__desc">Buscar o crear</span></span></label>
+      </div>
+      <div class="input-wrap"><svg class="icon" aria-hidden="true"><use href="#search"></use></svg><input class="input" id="buscar-cliente" type="search" placeholder="Nombre, cédula o NIT"></div>
+      <div class="client-card"><div class="avatar avatar--sm avatar--soft">JC</div><div class="list__body"><span class="list__title">Jorge Iván Castaño</span><span class="list__meta">CC 71.234.567 · jorge.castano@gmail.com</span></div><button type="button" class="btn btn--icon btn--sm btn--ghost" aria-label="Quitar cliente" title="Quitar cliente"><svg class="icon icon--sm" aria-hidden="true"><use href="#x"></use></svg></button></div>
+      <a href="#">+ Crear cliente nuevo</a>
+    </section>
+
+    <section class="card" aria-label="Tipo de documento">
+      <h2 class="card__title">Tipo de documento</h2>
+      <div class="choices choices--2" role="radiogroup" aria-label="Tipo de documento">
+        <label class="choice"><input class="choice__input" type="radio" name="documento"><span class="choice__box"><span class="choice__title"><svg class="icon icon--sm" aria-hidden="true"><use href="#file-text"></use></svg>Factura normal</span><span class="choice__desc">Se imprime en caja</span></span></label>
+        <label class="choice"><input class="choice__input" type="radio" name="documento" checked><span class="choice__box"><span class="choice__title"><svg class="icon icon--sm" aria-hidden="true"><use href="#file-check"></use></svg>Factura electrónica</span><span class="choice__desc">Se envía a la DIAN y al correo del cliente</span></span></label>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Forma de pago">
+      <h2 class="card__title">Forma de pago</h2>
+      <div class="choices" role="radiogroup" aria-label="Forma de pago">
+        <label class="choice choice--center"><input class="choice__input" type="radio" name="pago" checked><span class="choice__box"><span class="choice__title"><svg class="icon" aria-hidden="true"><use href="#banknote"></use></svg>Efectivo</span></span></label>
+        <label class="choice choice--center"><input class="choice__input" type="radio" name="pago"><span class="choice__box"><span class="choice__title"><svg class="icon" aria-hidden="true"><use href="#credit-card"></use></svg>Tarjeta</span></span></label>
+        <label class="choice choice--center"><input class="choice__input" type="radio" name="pago"><span class="choice__box"><span class="choice__title"><svg class="icon" aria-hidden="true"><use href="#smartphone"></use></svg>Transferencia</span></span></label>
+      </div>
+      <div class="field">
+  <label class="field__label" for="recibido">¿Con cuánto paga el cliente?</label>
+  <div class="input-wrap input-wrap--prefix"><span class="input-wrap__prefix">$</span><input class="input" id="recibido" name="recibido" type="text" value="250.000" placeholder="0" inputmode="numeric"></div>
+</div>
+      <div class="change-box"><span>Cambio a devolver</span><strong>$24.800</strong></div>
+    </section>
+
+    <section class="card" aria-label="Resumen">
+      <h2 class="card__title">Resumen</h2>
+      <div class="summary">
+        <div class="summary__row"><span>Subtotal (sin IVA)</span><strong>$189.244</strong></div>
+        <div class="summary__row"><span>IVA (19 %)</span><strong>$35.956</strong></div>
+        <div class="summary__total"><span class="summary__total-label">Total a pagar</span><span class="summary__total-value">$225.200</span></div>
+      </div>
+      <button type="button" class="btn btn--cta btn--xl btn--block hide-sm" data-open="#venta-exitosa"><svg class="icon" aria-hidden="true"><use href="#receipt"></use></svg>Cobrar y facturar</button>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block after_page %}
+<div class="checkout-bar">
+  <div class="checkout-bar__total"><span class="checkout-bar__label">Total a pagar</span><span class="checkout-bar__value">$225.200</span></div>
+  <button type="button" class="btn btn--cta btn--lg" data-open="#venta-exitosa">Cobrar y facturar</button>
+</div>
+{% endblock %}
+
+{% block overlays %}
+<div class="overlay overlay--center" id="venta-exitosa" role="dialog" aria-modal="true" aria-labelledby="venta-exitosa-title">
+  <div class="modal modal--center">
+    <div class="modal__icon icon-tile--success"><svg class="icon" aria-hidden="true"><use href="#circle-check"></use></svg></div>
+    <h2 class="modal__title" id="venta-exitosa-title">¡Venta registrada!</h2>
+    <p class="modal__text">La factura electrónica <strong>FE-0129</strong> por <strong>$225.200</strong> se envió a la DIAN y al correo jorge.castano@gmail.com.</p>
+    <div class="modal__actions">
+      <button type="button" class="btn btn--secondary btn--lg"><svg class="icon icon--sm" aria-hidden="true"><use href="#printer"></use></svg>Imprimir</button>
+      <a class="btn btn--primary btn--lg" href="{% url 'sales:new' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg>Nueva venta</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

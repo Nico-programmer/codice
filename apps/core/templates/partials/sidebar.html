@@ -1,25 +1,24 @@
 {% comment %}
-  Menú lateral. Contexto esperado:
-    active_section: "inicio" | "ventas" | "inventario" | "reportes" | "admin"
-    request.user con .rol in ("admin", "vendedor", "bodeguero")  (ajustar a grupos/permisos reales)
-  Las secciones sin permiso NO se renderizan. Ver roles.md.
+  Menú lateral. La sección activa sale de la app de la URL actual (request.resolver_match.app_name),
+  así las vistas no tienen que pasar nada.
+  request.user.rol: "admin" | "vendedor" | "bodeguero". Las secciones sin permiso NO se renderizan. Ver roles.md.
 {% endcomment %}
-{% with rol=request.user.rol %}
+{% with rol=request.user.rol app=request.resolver_match.app_name %}
 <aside class="sidebar" id="menu-lateral" aria-label="Menú principal">
   <div class="sidebar__brand">
     <a href="{% url 'core:home' %}" aria-label="Codice, ir a Inicio">{% include "partials/logo.html" with gid="logoSidebar" %}</a>
     <button type="button" class="btn btn--icon btn--sm btn--neutral sidebar__close" aria-label="Cerrar menú" data-toggle-nav>{% include "components/icon.html" with name="x" class="icon--sm" %}</button>
   </div>
   <nav class="nav">
-    <a class="nav__item{% if active_section == 'home' %} is-active{% endif %}" href="{% url 'core:home' %}"{% if active_section == 'inicio' %} aria-current="page"{% endif %}>{% include "components/icon.html" with name="house" %}<span>Inicio</span></a>
-    {% comment %} {% if rol == 'admin' or rol == 'vendedor' %}
-    <a class="nav__item{% if active_section == 'ventas' %} is-active{% endif %}" href="{% url 'ventas:nueva' %}">{% include "components/icon.html" with name="receipt" %}<span>Ventas y facturación</span></a>
+    <a class="nav__item{% if app == 'core' %} is-active{% endif %}" href="{% url 'core:home' %}"{% if app == 'core' %} aria-current="page"{% endif %}>{% include "components/icon.html" with name="house" %}<span>Inicio</span></a>
+    {% if rol == 'admin' or rol == 'vendedor' %}
+    <a class="nav__item{% if app == 'sales' %} is-active{% endif %}" href="{% url 'sales:new' %}"{% if app == 'sales' %} aria-current="page"{% endif %}>{% include "components/icon.html" with name="receipt" %}<span>Ventas y facturación</span></a>
     {% endif %}
-    <a class="nav__item{% if active_section == 'inventario' %} is-active{% endif %}" href="{% url 'inventario:productos' %}">{% include "components/icon.html" with name="package" %}<span>Inventario</span>{% if rol == 'vendedor' %}<span class="nav__note">Solo ver</span>{% endif %}</a>
+    <a class="nav__item{% if app == 'inventory' %} is-active{% endif %}" href="{% url 'inventory:products' %}"{% if app == 'inventory' %} aria-current="page"{% endif %}>{% include "components/icon.html" with name="package" %}<span>Inventario</span>{% if rol == 'vendedor' %}<span class="nav__note">Solo ver</span>{% endif %}</a>
     {% if rol == 'admin' %}
-    <a class="nav__item{% if active_section == 'reportes' %} is-active{% endif %}" href="{% url 'reportes:detalle' 'ventas' %}">{% include "components/icon.html" with name="chart-column" %}<span>Reportes</span></a>
-    <a class="nav__item{% if active_section == 'admin' %} is-active{% endif %}" href="{% url 'administracion:usuarios' %}">{% include "components/icon.html" with name="settings-2" %}<span>Administración</span></a>
-    {% endif %} {% endcomment %}
+    <a class="nav__item{% if app == 'reports' %} is-active{% endif %}" href="{% url 'reports:detail' 'ventas' %}"{% if app == 'reports' %} aria-current="page"{% endif %}>{% include "components/icon.html" with name="chart-column" %}<span>Reportes</span></a>
+    <a class="nav__item{% if app == 'users' or app == 'companies' %} is-active{% endif %}" href="{% url 'users:list' %}"{% if app == 'users' or app == 'companies' %} aria-current="page"{% endif %}>{% include "components/icon.html" with name="settings-2" %}<span>Administración</span></a>
+    {% endif %}
   </nav>
   <div class="sidebar__spacer"></div>
   <div class="sidebar__footer">

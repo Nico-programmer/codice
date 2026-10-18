@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Reporte de facturas electrónicas{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div>
+    <h1 class="page-header__title">Reportes</h1>
+    <p class="page-header__subtitle">Elige el tipo de reporte, filtra y descárgalo</p>
+  </div>
+  <div class="page-header__actions">
+    <button type="button" class="btn btn--secondary btn--lg"><svg class="icon icon--sm" aria-hidden="true"><use href="#file-spreadsheet"></use></svg>Exportar a Excel</button>
+    <button type="button" class="btn btn--secondary btn--lg"><svg class="icon icon--sm" aria-hidden="true"><use href="#file-text"></use></svg>Exportar a PDF</button>
+  </div>
+</header>
+<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'reports:detail' 'ventas' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#receipt"></use></svg>Ventas</a><a class="tab" href="{% url 'reports:detail' 'compras' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#truck"></use></svg>Compras</a><a class="tab" href="{% url 'reports:detail' 'entradas' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#arrow-down-to-line"></use></svg>Entradas</a><a class="tab" href="{% url 'reports:detail' 'salidas' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#arrow-up-from-line"></use></svg>Salidas</a><a class="tab" href="{% url 'reports:detail' 'ajustes' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#scale"></use></svg>Ajustes</a><a class="tab is-active" href="{% url 'reports:detail' 'facturas-electronicas' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#file-check"></use></svg>Facturas electrónicas</a></nav>
+
+<section class="card">
+  <div class="card__header"><div><h2 class="card__title">Reporte de facturas electrónicas</h2><p class="card__subtitle">Estado de envío a la DIAN</p></div></div>
+  <form method="get" class="filters" novalidate>
+    <div class="field">
+  <label class="field__label" for="desde">Desde</label>
+  <input class="input" id="desde" name="desde" type="date" value="2026-10-01">
+</div>
+    <div class="field">
+  <label class="field__label" for="hasta">Hasta</label>
+  <input class="input" id="hasta" name="hasta" type="date" value="2026-10-12">
+</div>
+    <div class="field">
+  <label class="field__label" for="sucursal">Sucursal</label>
+  <select class="select" id="sucursal" name="sucursal"><option selected>Todas</option><option>El Tornillo · Centro</option><option>El Tornillo · Belén</option><option>El Tornillo · Envigado</option></select>
+</div>
+    <div class="field">
+  <label class="field__label" for="usuario">Usuario</label>
+  <select class="select" id="usuario" name="usuario"><option selected>Todos</option><option>Andrés Gómez</option><option>Paola Andrea Zapata</option><option>Luis Fernando Ríos</option><option>Juan Camilo Henao</option></select>
+</div>
+    <div class="cluster"><button type="button" class="btn btn--primary"><svg class="icon icon--sm" aria-hidden="true"><use href="#funnel"></use></svg>Ver reporte</button><button type="button" class="btn btn--ghost">Limpiar</button></div>
+  </form>
+</section>
+
+<section class="card">
+  <div class="totals">
+    <div class="totals__item"><span class="totals__label">Emitidas</span><span class="totals__value">3</span></div>
+    <div class="totals__item"><span class="totals__label">Pendientes</span><span class="totals__value">1</span></div>
+    <div class="totals__item"><span class="totals__label">Rechazadas</span><span class="totals__value">1</span></div>
+    <div class="totals__item"><span class="totals__label">Valor total</span><span class="totals__value">$1.600.100</span></div>
+  </div>
+  <div class="table-wrap">
+    <table class="table table--stack">
+      <thead><tr><th>Fecha</th><th>Número</th><th>Cliente</th><th>Documento</th><th class="text-right">Valor</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td class="" data-label="Fecha">12 oct</td><td class="is-code is-primary" data-label="Número">FE-0128</td><td class="" data-label="Cliente">María Fernanda López</td><td class="" data-label="Documento">CC 43.567.890</td><td class="is-num" data-label="Valor">$186.400</td><td class="" data-label="Estado"><span class="badge badge--success">Emitida</span></td></tr>
+        <tr><td class="" data-label="Fecha">12 oct</td><td class="is-code is-primary" data-label="Número">FE-0127</td><td class="" data-label="Cliente">Jorge Iván Castaño</td><td class="" data-label="Documento">CC 71.234.567</td><td class="is-num" data-label="Valor">$54.900</td><td class="" data-label="Estado"><span class="badge badge--warning">Pendiente</span></td></tr>
+        <tr><td class="" data-label="Fecha">12 oct</td><td class="is-code is-primary" data-label="Número">FE-0126</td><td class="" data-label="Cliente">Construcciones Arango S.A.S.</td><td class="" data-label="Documento">NIT 900.456.789-2</td><td class="is-num" data-label="Valor">$1.248.000</td><td class="" data-label="Estado"><span class="badge badge--success">Emitida</span></td></tr>
+        <tr><td class="" data-label="Fecha">12 oct</td><td class="is-code is-primary" data-label="Número">FE-0125</td><td class="" data-label="Cliente">Luz Marina Ospina</td><td class="" data-label="Documento">CC 32.109.876</td><td class="is-num" data-label="Valor">$18.500</td><td class="" data-label="Estado"><span class="badge badge--danger">Rechazada</span></td></tr>
+        <tr><td class="" data-label="Fecha">11 oct</td><td class="is-code is-primary" data-label="Número">FE-0124</td><td class="" data-label="Cliente">Consumidor final</td><td class="" data-label="Documento">—</td><td class="is-num" data-label="Valor">$92.300</td><td class="" data-label="Estado"><span class="badge badge--success">Emitida</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination"><span>Del 1 al 12 de octubre de 2026 · 5 registros</span><div class="pagination__pages"><a class="page-btn" href="#" aria-label="Anterior"><svg class="icon icon--sm" aria-hidden="true"><use href="#chevron-left"></use></svg></a><a class="page-btn is-active" href="#" aria-current="page">1</a><a class="page-btn" href="#">2</a><a class="page-btn" href="#">3</a><a class="page-btn" href="#" aria-label="Siguiente"><svg class="icon icon--sm" aria-hidden="true"><use href="#chevron-right"></use></svg></a></div></div>
+</section>
+{% endblock %}

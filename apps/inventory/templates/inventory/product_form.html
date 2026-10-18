@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Nuevo producto{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div>
+    <div class="breadcrumb"><a href="{% url 'inventory:products' %}">Productos</a><svg class="icon icon--xs" aria-hidden="true"><use href="#chevron-right"></use></svg><span>Nuevo producto</span></div>
+    <h1 class="page-header__title">Nuevo producto</h1>
+    <p class="page-header__subtitle">Los campos con * son obligatorios</p>
+  </div>
+  
+</header>
+
+<form method="post" class="card form" novalidate style="max-width:960px">{% csrf_token %}
+  <div class="form-section">
+    <h2 class="form-section__title">Datos del producto</h2>
+    <div class="form-grid">
+      <div class="field span-all">
+  <label class="field__label" for="nombre">Nombre del producto <span class="field__req">*</span></label>
+  <input class="input" id="nombre" name="nombre" type="text" value="Llave de paso 1/2&quot; PVC" placeholder="Ej. Cemento gris 50 kg">
+</div>
+      <div class="field">
+  <label class="field__label" for="codigo">Código <span class="field__req">*</span></label>
+  <input class="input" id="codigo" name="codigo" type="text" value="FER-0014" placeholder="Ej. FER-0001">
+  <span class="field__hint">Puedes escanear el código de barras.</span>
+</div>
+      <div class="field">
+  <label class="field__label" for="categoria">Categoría <span class="field__req">*</span></label>
+  <select class="select" id="categoria" name="categoria"><option>Elige una categoría</option><option>Construcción</option><option>Herramientas</option><option selected>Plomería</option><option>Pinturas</option><option>Eléctricos</option></select>
+</div>
+      <div class="field">
+  <label class="field__label" for="unidad">Se vende por <span class="field__req">*</span></label>
+  <select class="select" id="unidad" name="unidad"><option selected>Unidad</option><option>Bulto</option><option>Galón</option><option>Metro</option><option>Libra</option><option>Caja</option></select>
+</div>
+      <div class="field">
+  <label class="field__label" for="proveedor">Proveedor <span class="field__optional">(opcional)</span></label>
+  <select class="select" id="proveedor" name="proveedor"><option>Sin proveedor</option><option selected>Distribuidora Ferretera Antioquia S.A.S.</option><option>Pinturas del Valle Ltda.</option><option>Eléctricos La 70</option></select>
+</div>
+    </div>
+  </div>
+  <div class="form-section">
+    <h2 class="form-section__title">Precio</h2>
+    <p class="form-section__text">Escribe el precio final que paga el cliente, con IVA incluido.</p>
+    <div class="form-grid form-grid--3">
+      <div class="field">
+  <label class="field__label" for="costo">Precio de compra <span class="field__optional">(opcional)</span></label>
+  <div class="input-wrap input-wrap--prefix"><span class="input-wrap__prefix">$</span><input class="input" id="costo" name="costo" type="text" value="14.200" placeholder="0" inputmode="numeric"></div>
+</div>
+      <div class="field">
+  <label class="field__label" for="precio">Precio de venta <span class="field__req">*</span></label>
+  <div class="input-wrap input-wrap--prefix"><span class="input-wrap__prefix">$</span><input class="input" id="precio" name="precio" type="text" value="22.900" placeholder="0" inputmode="numeric"></div>
+  <span class="field__hint">Ganas $5.044 por unidad (sin IVA).</span>
+</div>
+      <div class="field">
+  <label class="field__label" for="iva">IVA <span class="field__req">*</span></label>
+  <select class="select" id="iva" name="iva"><option selected>19 %</option><option>5 %</option><option>Exento (0 %)</option></select>
+</div>
+    </div>
+  </div>
+  <div class="form-section">
+    <h2 class="form-section__title">Existencias</h2>
+    <div class="form-grid form-grid--3">
+      <div class="field">
+  <label class="field__label" for="cantidad">Cantidad inicial</label>
+  <input class="input" id="cantidad" name="cantidad" type="number" value="24" placeholder="0" min="0">
+</div>
+      <div class="field">
+  <label class="field__label" for="minimo">Avisarme cuando queden</label>
+  <input class="input" id="minimo" name="minimo" type="number" value="5" placeholder="0" min="0">
+  <span class="field__hint">Te mostraremos la alerta de stock bajo.</span>
+</div>
+      <div class="field">
+  <label class="field__label" for="sucursal">Sucursal <span class="field__req">*</span></label>
+  <select class="select" id="sucursal" name="sucursal"><option selected>El Tornillo · Centro</option><option>El Tornillo · Belén</option><option>El Tornillo · Envigado</option></select>
+</div>
+    </div>
+  </div>
+  <div class="form-actions">
+    <a class="btn btn--neutral btn--lg" href="{% url 'inventory:products' %}">Cancelar</a>
+    <a class="btn btn--primary btn--lg" href="{% url 'inventory:products' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#check"></use></svg>Guardar producto</a>
+  </div>
+</form>
+{% endblock %}

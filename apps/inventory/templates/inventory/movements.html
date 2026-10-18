@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Movimientos de inventario{% endblock %}
+
+{% block content %}
+{% with rol=request.user.rol %}
+<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'inventory:products' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg>Productos</a>{% if rol == 'admin' or rol == 'bodeguero' %}<a class="tab is-active" href="{% url 'inventory:movements' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#arrow-left-right"></use></svg>Movimientos</a>{% endif %}</nav>
+<header class="page-header">
+  <div>
+    <h1 class="page-header__title">Movimientos de inventario</h1>
+    <p class="page-header__subtitle">Todo lo que entra y sale de la bodega</p>
+  </div>
+  <div class="page-header__actions">
+    <button type="button" class="btn btn--primary btn--lg" data-open="#registrar-movimiento"><svg class="icon icon--sm" aria-hidden="true"><use href="#arrow-down-to-line"></use></svg>Registrar entrada</button>
+    <button type="button" class="btn btn--secondary btn--lg" data-open="#registrar-movimiento"><svg class="icon icon--sm" aria-hidden="true"><use href="#arrow-up-from-line"></use></svg>Registrar salida</button>
+    <button type="button" class="btn btn--neutral btn--lg" data-open="#registrar-movimiento"><svg class="icon icon--sm" aria-hidden="true"><use href="#scale"></use></svg>Hacer ajuste</button>
+  </div>
+</header>
+
+<section class="card">
+  <div class="toolbar">
+    <div class="field toolbar__search"><label class="field__label" for="q">Buscar</label><div class="input-wrap"><svg class="icon" aria-hidden="true"><use href="#search"></use></svg><input class="input" id="q" type="search" placeholder="Nombre o código del producto"></div></div>
+    <div class="field toolbar__filter"><label class="field__label" for="tipo">Tipo</label><select class="select" id="tipo" name="tipo"><option selected>Todos</option><option>Entrada</option><option>Salida</option><option>Ajuste</option><option>Venta</option></select></div>
+    <div class="field toolbar__filter"><label class="field__label" for="sucursal">Sucursal</label><select class="select" id="sucursal" name="sucursal"><option>Todas</option><option selected>El Tornillo · Centro</option><option>El Tornillo · Belén</option><option>El Tornillo · Envigado</option></select></div>
+    <div class="field toolbar__filter"><label class="field__label" for="desde">Desde</label><input class="input" id="desde" name="desde" type="date" value="2026-10-11"></div>
+    <div class="field toolbar__filter"><label class="field__label" for="hasta">Hasta</label><input class="input" id="hasta" name="hasta" type="date" value="2026-10-12"></div>
+  </div>
+  <div class="table-wrap">
+    <table class="table table--stack">
+      <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th class="text-right">Cantidad</th><th>Motivo</th><th>Registró</th></tr></thead>
+      <tbody>
+        <tr><td class="is-muted" data-label="Fecha">Hoy, 10:42 a. m.</td><td data-label="Tipo"><span class="tag tag--plain"><svg class="icon" aria-hidden="true"><use href="#receipt"></use></svg>Venta</span></td><td class="is-primary strong" data-label="Producto">Pintura vinilo blanco galón</td><td class="is-num qty-minus" data-label="Cantidad">−1 galón</td><td class="is-muted" data-label="Motivo">Factura FE-0128</td><td class="is-muted" data-label="Registró">Andrés Gómez</td></tr>
+        <tr><td class="is-muted" data-label="Fecha">Hoy, 10:20 a. m.</td><td data-label="Tipo"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#arrow-down-to-line"></use></svg>Entrada</span></td><td class="is-primary strong" data-label="Producto">Cemento gris 50 kg</td><td class="is-num qty-plus" data-label="Cantidad">+20 bultos</td><td class="is-muted" data-label="Motivo">Compra a proveedor</td><td class="is-muted" data-label="Registró">Luis Fernando Ríos</td></tr>
+        <tr><td class="is-muted" data-label="Fecha">Hoy, 9:48 a. m.</td><td data-label="Tipo"><span class="tag tag--accent"><svg class="icon" aria-hidden="true"><use href="#arrow-up-from-line"></use></svg>Salida</span></td><td class="is-primary strong" data-label="Producto">Tubo PVC 1/2" x 6 m</td><td class="is-num qty-minus" data-label="Cantidad">−6 unidades</td><td class="is-muted" data-label="Motivo">Traslado a Belén</td><td class="is-muted" data-label="Registró">Luis Fernando Ríos</td></tr>
+        <tr><td class="is-muted" data-label="Fecha">Hoy, 9:05 a. m.</td><td data-label="Tipo"><span class="tag tag--plain"><svg class="icon" aria-hidden="true"><use href="#scale"></use></svg>Ajuste</span></td><td class="is-primary strong" data-label="Producto">Brocha 3"</td><td class="is-num qty-minus" data-label="Cantidad">−2 unidades</td><td class="is-muted" data-label="Motivo">Conteo físico: había 42, se contaron 40</td><td class="is-muted" data-label="Registró">Luis Fernando Ríos</td></tr>
+        <tr><td class="is-muted" data-label="Fecha">Hoy, 8:30 a. m.</td><td data-label="Tipo"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#arrow-down-to-line"></use></svg>Entrada</span></td><td class="is-primary strong" data-label="Producto">Cable eléctrico #12 (metro)</td><td class="is-num qty-plus" data-label="Cantidad">+100 metros</td><td class="is-muted" data-label="Motivo">Compra a proveedor</td><td class="is-muted" data-label="Registró">Luis Fernando Ríos</td></tr>
+        <tr><td class="is-muted" data-label="Fecha">Dom 11 oct, 4:10 p. m.</td><td data-label="Tipo"><span class="tag tag--accent"><svg class="icon" aria-hidden="true"><use href="#arrow-up-from-line"></use></svg>Salida</span></td><td class="is-primary strong" data-label="Producto">Pintura vinilo blanco galón</td><td class="is-num qty-minus" data-label="Cantidad">−1 galón</td><td class="is-muted" data-label="Motivo">Producto dañado</td><td class="is-muted" data-label="Registró">Juan Camilo Henao</td></tr>
+        <tr><td class="is-muted" data-label="Fecha">Dom 11 oct, 11:00 a. m.</td><td data-label="Tipo"><span class="tag"><svg class="icon" aria-hidden="true"><use href="#arrow-down-to-line"></use></svg>Entrada</span></td><td class="is-primary strong" data-label="Producto">Martillo de uña 16 oz</td><td class="is-num qty-plus" data-label="Cantidad">+6 unidades</td><td class="is-muted" data-label="Motivo">Devolución de cliente</td><td class="is-muted" data-label="Registró">Luis Fernando Ríos</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination"><span>Página 1 de 9</span><div class="pagination__pages"><a class="page-btn" href="#" aria-label="Anterior"><svg class="icon icon--sm" aria-hidden="true"><use href="#chevron-left"></use></svg></a><a class="page-btn is-active" href="#" aria-current="page">1</a><a class="page-btn" href="#">2</a><a class="page-btn" href="#">3</a><a class="page-btn" href="#" aria-label="Siguiente"><svg class="icon icon--sm" aria-hidden="true"><use href="#chevron-right"></use></svg></a></div></div>
+</section>
+{% endwith %}
+{% endblock %}
+
+{% block overlays %}
+<div class="overlay" id="registrar-movimiento" role="dialog" aria-modal="true" aria-labelledby="registrar-movimiento-title">
+  <aside class="drawer">
+    <div class="drawer__header">
+      <div><h2 class="drawer__title" id="registrar-movimiento-title">Registrar movimiento</h2><p class="drawer__subtitle">Las existencias se actualizan al guardar</p></div>
+      <button type="button" class="btn btn--icon btn--sm btn--neutral" aria-label="Cerrar" title="Cerrar" data-close><svg class="icon icon--sm" aria-hidden="true"><use href="#x"></use></svg></button>
+    </div>
+    <form method="post" class="drawer__body" novalidate>{% csrf_token %}
+      <div class="field"><span class="field__label">¿Qué vas a registrar?</span>
+        <div class="choices" role="radiogroup">
+          <label class="choice choice--center"><input class="choice__input" type="radio" name="mov" checked><span class="choice__box"><span class="choice__title"><svg class="icon" aria-hidden="true"><use href="#arrow-down-to-line"></use></svg>Entrada</span></span></label>
+          <label class="choice choice--center"><input class="choice__input" type="radio" name="mov"><span class="choice__box"><span class="choice__title"><svg class="icon" aria-hidden="true"><use href="#arrow-up-from-line"></use></svg>Salida</span></span></label>
+          <label class="choice choice--center"><input class="choice__input" type="radio" name="mov"><span class="choice__box"><span class="choice__title"><svg class="icon" aria-hidden="true"><use href="#scale"></use></svg>Ajuste</span></span></label>
+        </div>
+      </div>
+      <div class="field">
+  <label class="field__label" for="mov-producto">Producto <span class="field__req">*</span></label>
+  <div class="input-wrap"><svg class="icon" aria-hidden="true"><use href="#search"></use></svg><input class="input" id="mov-producto" type="search" placeholder="Busca por nombre o código" value="Cemento gris 50 kg"></div>
+</div>
+      <div class="alert alert--info"><svg class="icon icon--sm" aria-hidden="true"><use href="#info"></use></svg><div class="alert__body"><span>Hay <strong>4 bultos</strong>. Después de guardar quedarán <strong>24 bultos</strong>.</span></div></div>
+      <div class="form-grid">
+        <div class="field">
+  <label class="field__label" for="mov-cantidad">Cantidad <span class="field__req">*</span></label>
+  <input class="input" id="mov-cantidad" name="mov-cantidad" type="number" value="20" placeholder="0" min="1">
+</div>
+        <div class="field">
+  <label class="field__label" for="mov-motivo">Motivo <span class="field__req">*</span></label>
+  <select class="select" id="mov-motivo" name="mov-motivo"><option selected>Compra a proveedor</option><option>Devolución de cliente</option><option>Traslado desde otra sucursal</option></select>
+</div>
+      </div>
+      <div class="field">
+  <label class="field__label" for="mov-nota">Nota <span class="field__optional">(opcional)</span></label>
+  <textarea class="textarea" id="mov-nota" placeholder="Ej. Factura del proveedor n.º 4581"></textarea>
+</div>
+    </form>
+    <div class="drawer__footer">
+      <button type="button" class="btn btn--neutral btn--lg" data-close>Cancelar</button>
+      <button type="button" class="btn btn--primary btn--lg" data-close><svg class="icon icon--sm" aria-hidden="true"><use href="#check"></use></svg>Guardar movimiento</button>
+    </div>
+  </aside>
+</div>
+{% endblock %}

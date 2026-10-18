@@ -1,2 +1,110 @@
 {% extends "base.html" %}
-{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+{% with rol=request.user.rol %}
+<header class="page-header">
+  <div>
+    <h1 class="page-header__title">Buenos días, {{ request.user.first_name }}</h1>
+    <p class="page-header__subtitle">Lunes 12 de octubre de 2026 · Así va tu negocio hoy</p>
+  </div>
+  <div class="page-header__actions">
+    <div class="dropdown">
+    <button type="button" class="branch-select dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#map-pin"></use></svg>
+      <span class="branch-select__text"><span class="branch-select__label">Sucursal</span><span class="branch-select__name">El Tornillo · Centro</span></span>
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#chevron-down"></use></svg>
+    </button>
+    <div class="dropdown__menu" role="listbox">
+      <div class="dropdown__label">Cambiar de sucursal</div>
+      <a class="dropdown__item is-selected" href="#" role="option" aria-selected="true"><span><span class="cell-main">El Tornillo · Centro</span><span class="cell-sub">Cra. 50 #45-12, Medellín</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#check"></use></svg></a>
+      <a class="dropdown__item" href="#" role="option"><span><span class="cell-main">El Tornillo · Belén</span><span class="cell-sub">Cl. 30A #76-41, Medellín</span></span></a>
+      <a class="dropdown__item" href="#" role="option"><span><span class="cell-main">El Tornillo · Envigado</span><span class="cell-sub">Cra. 43A #38 Sur-20, Envigado</span></span></a>
+    </div>
+  </div>
+  <button type="button" class="btn btn--neutral btn--icon btn--lg btn--has-dot hide-sm" aria-label="Avisos (3 nuevos)"><svg class="icon icon--sm" aria-hidden="true"><use href="#bell"></use></svg><span class="btn__dot"></span></button>
+  </div>
+</header>
+
+<section class="grid grid--dashboard" aria-label="Resumen de ventas">
+  <div class="card stat">
+    <div class="stat__head"><span class="icon-tile"><svg class="icon icon--sm" aria-hidden="true"><use href="#receipt"></use></svg></span>Ventas de hoy</div>
+    <div class="stat__value">$2.384.500</div>
+    <div class="stat__compare"><span class="delta delta--up"><svg class="icon icon--xs" aria-hidden="true"><use href="#trending-up"></use></svg>12,9 %</span><span>más que ayer ($2.112.000)</span></div>
+    <div class="stat__foot">38 ventas registradas</div>
+  </div>
+  <div class="card stat">
+    <div class="stat__head"><span class="icon-tile"><svg class="icon icon--sm" aria-hidden="true"><use href="#calendar"></use></svg></span>Ventas del mes</div>
+    <div class="stat__value">$48.920.300</div>
+    <div class="stat__compare"><span class="delta delta--up"><svg class="icon icon--xs" aria-hidden="true"><use href="#trending-up"></use></svg>8,0 %</span><span>más que septiembre a esta fecha</span></div>
+    <div class="stat__foot">Del 1 al 12 de octubre · IVA incluido</div>
+  </div>
+  <div class="quick-actions">
+    <div class="quick-actions__title">Accesos rápidos</div>
+    <a class="quick-action quick-action--primary" href="{% url 'sales:new' %}"><span class="quick-action__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#shopping-cart"></use></svg></span><span class="quick-action__text"><span class="quick-action__label">Nueva venta</span><span class="quick-action__sub">Cobrar y facturar</span></span></a>
+    {% if rol == 'admin' %}<a class="quick-action" href="{% url 'inventory:product_create' %}"><span class="quick-action__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#package-plus"></use></svg></span><span class="quick-action__text"><span class="quick-action__label">Nuevo producto</span><span class="quick-action__sub">Agregar al inventario</span></span></a>{% endif %}
+    {% if rol == 'vendedor' %}<a class="quick-action" href="{% url 'inventory:products' %}"><span class="quick-action__icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#search"></use></svg></span><span class="quick-action__text"><span class="quick-action__label">Buscar producto</span><span class="quick-action__sub">Ver precio y existencias</span></span></a>{% endif %}
+  </div>
+</section>
+
+<section class="grid grid--main-side">
+  <div class="card">
+    <div class="card__header">
+      <div><h2 class="card__title">Ventas de la semana</h2><p class="card__subtitle">Últimos 7 días · El Tornillo · Centro</p></div>
+      <div class="text-right"><div class="muted strong" style="font-size:14px">Total de la semana</div><div class="totals__value">$14.634.500</div></div>
+    </div>
+    <div class="chart" role="img" aria-label="Ventas de los últimos 7 días">
+      <div class="chart__col"><span class="chart__value">$1,9 M</span><div class="chart__bar" style="--h:56%"></div></div>
+      <div class="chart__col"><span class="chart__value">$2,1 M</span><div class="chart__bar" style="--h:64%"></div></div>
+      <div class="chart__col"><span class="chart__value">$1,6 M</span><div class="chart__bar" style="--h:49%"></div></div>
+      <div class="chart__col"><span class="chart__value">$2,5 M</span><div class="chart__bar" style="--h:75%"></div></div>
+      <div class="chart__col"><span class="chart__value">$3,0 M</span><div class="chart__bar" style="--h:92%"></div></div>
+      <div class="chart__col"><span class="chart__value">$1,2 M</span><div class="chart__bar" style="--h:37%"></div></div>
+      <div class="chart__col is-today"><span class="chart__value">$2,4 M</span><div class="chart__bar" style="--h:73%"></div></div>
+    </div>
+    <div class="chart__labels">
+      <div class="chart__label"><span class="chart__day">Mar</span><span class="chart__date">6 oct</span></div>
+      <div class="chart__label"><span class="chart__day">Mié</span><span class="chart__date">7 oct</span></div>
+      <div class="chart__label"><span class="chart__day">Jue</span><span class="chart__date">8 oct</span></div>
+      <div class="chart__label"><span class="chart__day">Vie</span><span class="chart__date">9 oct</span></div>
+      <div class="chart__label"><span class="chart__day">Sáb</span><span class="chart__date">10 oct</span></div>
+      <div class="chart__label"><span class="chart__day">Dom</span><span class="chart__date">11 oct</span></div>
+      <div class="chart__label is-today"><span class="chart__day">Hoy</span><span class="chart__date">12 oct</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__header">
+      <div class="card__heading"><span class="icon-tile icon-tile--sm icon-tile--warning"><svg class="icon icon--sm" aria-hidden="true"><use href="#triangle-alert"></use></svg></span><h2 class="card__title">Productos por agotarse</h2></div>
+      <a class="card__link" href="{% url 'inventory:products' %}">Ver todos</a>
+    </div>
+    <div class="list">
+      <div class="list__item"><span class="icon-tile icon-tile--sm icon-tile--danger"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg></span><div class="list__body"><span class="list__title">Tubo PVC 1/2" x 6 m</span><span class="list__meta">Quedan <strong>0 unidades</strong></span></div><span class="badge badge--danger">Sin stock</span></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm icon-tile--warning"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg></span><div class="list__body"><span class="list__title">Cemento gris 50 kg</span><span class="list__meta">Quedan <strong>4 bultos</strong></span></div><span class="badge badge--warning">Stock bajo</span></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm icon-tile--warning"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg></span><div class="list__body"><span class="list__title">Pintura vinilo blanco galón</span><span class="list__meta">Quedan <strong>3 galones</strong></span></div><span class="badge badge--warning">Stock bajo</span></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm icon-tile--warning"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg></span><div class="list__body"><span class="list__title">Martillo de uña 16 oz</span><span class="list__meta">Quedan <strong>2 unidades</strong></span></div><span class="badge badge--warning">Stock bajo</span></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm icon-tile--danger"><svg class="icon icon--sm" aria-hidden="true"><use href="#package"></use></svg></span><div class="list__body"><span class="list__title">Puntilla 2" con cabeza (libra)</span><span class="list__meta">Quedan <strong>0 libras</strong></span></div><span class="badge badge--danger">Sin stock</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card__header">
+    <h2 class="card__title">Últimas facturas</h2>
+    <a class="card__link" href="{% url 'sales:invoices' %}">Ver todas las facturas</a>
+  </div>
+  <div class="table-wrap">
+    <table class="table table--stack">
+      <thead><tr><th>Número</th><th>Cliente</th><th>Fecha</th><th class="text-right">Valor (IVA incluido)</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td class="is-code is-primary" data-label="Número">FE-0128</td><td class="strong" data-label="Cliente">María Fernanda López</td><td class="is-muted" data-label="Fecha">Hoy, 10:42 a. m.</td><td class="is-num" data-label="Valor">$186.400</td><td data-label="Estado"><span class="badge badge--success">Emitida</span></td></tr>
+        <tr><td class="is-code is-primary" data-label="Número">FE-0127</td><td class="strong" data-label="Cliente">Jorge Iván Castaño</td><td class="is-muted" data-label="Fecha">Hoy, 10:15 a. m.</td><td class="is-num" data-label="Valor">$54.900</td><td data-label="Estado"><span class="badge badge--warning">Pendiente</span></td></tr>
+        <tr><td class="is-code is-primary" data-label="Número">FE-0126</td><td class="strong" data-label="Cliente">Construcciones Arango S.A.S.</td><td class="is-muted" data-label="Fecha">Hoy, 9:30 a. m.</td><td class="is-num" data-label="Valor">$1.248.000</td><td data-label="Estado"><span class="badge badge--success">Emitida</span></td></tr>
+        <tr><td class="is-code is-primary" data-label="Número">FE-0125</td><td class="strong" data-label="Cliente">Luz Marina Ospina</td><td class="is-muted" data-label="Fecha">Hoy, 8:57 a. m.</td><td class="is-num" data-label="Valor">$18.500</td><td data-label="Estado"><span class="badge badge--danger">Rechazada</span></td></tr>
+        <tr><td class="is-code is-primary" data-label="Número">FE-0124</td><td class="strong" data-label="Cliente">Consumidor final</td><td class="is-muted" data-label="Fecha">Dom 11 oct, 5:20 p. m.</td><td class="is-num" data-label="Valor">$92.300</td><td data-label="Estado"><span class="badge badge--success">Emitida</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endwith %}
+{% endblock %}

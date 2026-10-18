@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Empresas{% endblock %}
+
+{% block content %}
+<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'users:list' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#users"></use></svg>Usuarios</a><a class="tab is-active" href="{% url 'companies:list' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#building-2"></use></svg>Empresas</a><a class="tab" href="{% url 'companies:branches' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#store"></use></svg>Sucursales</a></nav>
+<header class="page-header">
+  <div>
+    <h1 class="page-header__title">Empresas</h1>
+    <p class="page-header__subtitle">Negocios que facturan con Codice</p>
+  </div>
+  <div class="page-header__actions">
+    <button type="button" class="btn btn--primary btn--lg" data-open="#drawer-empresa"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg>Nueva empresa</button>
+  </div>
+</header>
+<section class="card">
+  <div class="toolbar">
+    <div class="field toolbar__search"><label class="field__label" for="q">Buscar</label><div class="input-wrap"><svg class="icon" aria-hidden="true"><use href="#search"></use></svg><input class="input" id="q" type="search" placeholder="Nombre o NIT"></div></div>
+    <div class="field toolbar__filter"><label class="field__label" for="estado">Estado</label><select class="select" id="estado" name="estado"><option selected>Todas</option><option>Activas</option><option>Inactivas</option></select></div>
+  </div>
+  <div class="table-wrap">
+    <table class="table table--stack">
+      <thead><tr><th>Empresa</th><th>NIT</th><th>Ciudad</th><th class="text-right">Sucursales</th><th>Factura electrónica</th><th>Estado</th><th class="text-right">Acciones</th></tr></thead>
+      <tbody>
+        <tr><td class="is-primary" data-label="Empresa"><span class="cell-main">Ferretería El Tornillo</span><span class="cell-sub">Ferretería El Tornillo S.A.S.</span></td><td class="tnum" data-label="NIT">901.234.567-8</td><td class="is-muted" data-label="Ciudad">Medellín</td><td class="is-num" data-label="Sucursales">3</td><td data-label="Factura electrónica"><span class="badge badge--success">Activa</span></td><td data-label="Estado"><span class="badge badge--success">Activa</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-empresa"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
+        <tr class="is-inactive"><td class="is-primary" data-label="Empresa"><span class="cell-main">Depósito La Esquina</span><span class="cell-sub">Depósito y Ferretería La Esquina S.A.S.</span></td><td class="tnum" data-label="NIT">900.876.543-1</td><td class="is-muted" data-label="Ciudad">Bello</td><td class="is-num" data-label="Sucursales">1</td><td data-label="Factura electrónica"><span class="badge badge--warning">Pendiente</span></td><td data-label="Estado"><span class="badge badge--neutral">Inactiva</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-empresa"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--secondary btn--sm"><svg class="icon icon--sm" aria-hidden="true"><use href="#rotate-ccw"></use></svg>Reactivar</button></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block overlays %}
+<div class="overlay" id="drawer-empresa" role="dialog" aria-modal="true" aria-labelledby="drawer-empresa-title">
+  <aside class="drawer">
+    <div class="drawer__header">
+      <div><h2 class="drawer__title" id="drawer-empresa-title">Nueva empresa</h2><p class="drawer__subtitle">Datos que aparecerán en las facturas</p></div>
+      <button type="button" class="btn btn--icon btn--sm btn--neutral" aria-label="Cerrar" title="Cerrar" data-close><svg class="icon icon--sm" aria-hidden="true"><use href="#x"></use></svg></button>
+    </div>
+    <form method="post" class="drawer__body" novalidate>{% csrf_token %}
+      <div class="field">
+  <label class="field__label" for="e-nombre">Nombre del negocio <span class="field__req">*</span></label>
+  <input class="input" id="e-nombre" name="e-nombre" type="text" placeholder="Ej. Ferretería El Tornillo">
+  <span class="field__hint">Así lo conocen tus clientes.</span>
+</div>
+      <div class="field">
+  <label class="field__label" for="e-razon">Razón social <span class="field__req">*</span></label>
+  <input class="input" id="e-razon" name="e-razon" type="text" placeholder="Ej. Ferretería El Tornillo S.A.S.">
+  <span class="field__hint">Como aparece en el RUT.</span>
+</div>
+      <div class="form-grid">
+        <div class="field">
+  <label class="field__label" for="e-nit">NIT <span class="field__req">*</span></label>
+  <input class="input" id="e-nit" name="e-nit" type="text" placeholder="901234567">
+  <span class="field__hint">Sin puntos ni dígito de verificación.</span>
+</div>
+        <div class="field">
+  <label class="field__label" for="e-dv">Dígito de verificación <span class="field__req">*</span></label>
+  <input class="input" id="e-dv" name="e-dv" type="text" placeholder="8" inputmode="numeric" maxlength="1">
+</div>
+        <div class="field">
+  <label class="field__label" for="e-ciudad">Ciudad <span class="field__req">*</span></label>
+  <select class="select" id="e-ciudad" name="e-ciudad"><option selected>Elige la ciudad</option><option>Medellín</option><option>Bello</option><option>Envigado</option><option>Itagüí</option><option>Bogotá</option><option>Cali</option></select>
+</div>
+        <div class="field">
+  <label class="field__label" for="e-tel">Teléfono</label>
+  <input class="input" id="e-tel" name="e-tel" type="tel" placeholder="604 444 5566">
+</div>
+      </div>
+      <div class="field">
+  <label class="field__label" for="e-dir">Dirección <span class="field__req">*</span></label>
+  <input class="input" id="e-dir" name="e-dir" type="text" placeholder="Ej. Cra. 50 #45-12">
+</div>
+      <div class="field">
+  <label class="field__label" for="e-correo">Correo para facturas <span class="field__req">*</span></label>
+  <input class="input" id="e-correo" name="e-correo" type="email" placeholder="facturas@tunegocio.com">
+  <span class="field__hint">Aquí llegan las respuestas de la DIAN.</span>
+</div>
+      <div class="form-section"><h3 class="form-section__title">Numeración de facturas electrónicas</h3><p class="form-section__text">Datos de la resolución que te dio la DIAN.</p>
+        <div class="form-grid form-grid--3">
+          <div class="field">
+  <label class="field__label" for="e-prefijo">Prefijo</label>
+  <input class="input" id="e-prefijo" name="e-prefijo" type="text" value="FE">
+</div>
+          <div class="field">
+  <label class="field__label" for="e-desde">Desde</label>
+  <input class="input" id="e-desde" name="e-desde" type="number" value="1">
+</div>
+          <div class="field">
+  <label class="field__label" for="e-hasta">Hasta</label>
+  <input class="input" id="e-hasta" name="e-hasta" type="number" value="5000">
+</div>
+        </div>
+      </div>
+    </form>
+    <div class="drawer__footer">
+      <button type="button" class="btn btn--neutral btn--lg" data-close>Cancelar</button>
+      <button type="button" class="btn btn--primary btn--lg"><svg class="icon icon--sm" aria-hidden="true"><use href="#check"></use></svg>Guardar empresa</button>
+    </div>
+  </aside>
+</div>
+<div class="overlay overlay--center" id="confirmar-inactivar" role="alertdialog" aria-modal="true" aria-labelledby="confirmar-inactivar-title">
+  <div class="modal modal--center">
+    <div class="modal__icon icon-tile--danger"><svg class="icon" aria-hidden="true"><use href="#ban"></use></svg></div>
+    <h2 class="modal__title" id="confirmar-inactivar-title">¿Inactivar esta empresa?</h2>
+    <p class="modal__text">Sus sucursales y usuarios dejarán de poder vender. Las facturas y el historial se conservan.</p>
+    <div class="modal__actions">
+      <button type="button" class="btn btn--neutral btn--lg" data-close>Cancelar</button>
+      <button type="button" class="btn btn--danger-solid btn--lg" data-close>Sí, inactivar</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

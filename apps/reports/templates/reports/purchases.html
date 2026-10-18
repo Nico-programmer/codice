@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Reporte de compras{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div>
+    <h1 class="page-header__title">Reportes</h1>
+    <p class="page-header__subtitle">Elige el tipo de reporte, filtra y descárgalo</p>
+  </div>
+  <div class="page-header__actions">
+    <button type="button" class="btn btn--secondary btn--lg"><svg class="icon icon--sm" aria-hidden="true"><use href="#file-spreadsheet"></use></svg>Exportar a Excel</button>
+    <button type="button" class="btn btn--secondary btn--lg"><svg class="icon icon--sm" aria-hidden="true"><use href="#file-text"></use></svg>Exportar a PDF</button>
+  </div>
+</header>
+<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'reports:detail' 'ventas' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#receipt"></use></svg>Ventas</a><a class="tab is-active" href="{% url 'reports:detail' 'compras' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#truck"></use></svg>Compras</a><a class="tab" href="{% url 'reports:detail' 'entradas' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#arrow-down-to-line"></use></svg>Entradas</a><a class="tab" href="{% url 'reports:detail' 'salidas' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#arrow-up-from-line"></use></svg>Salidas</a><a class="tab" href="{% url 'reports:detail' 'ajustes' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#scale"></use></svg>Ajustes</a><a class="tab" href="{% url 'reports:detail' 'facturas-electronicas' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#file-check"></use></svg>Facturas electrónicas</a></nav>
+
+<section class="card">
+  <div class="card__header"><div><h2 class="card__title">Reporte de compras</h2><p class="card__subtitle">Mercancía comprada a proveedores</p></div></div>
+  <form method="get" class="filters" novalidate>
+    <div class="field">
+  <label class="field__label" for="desde">Desde</label>
+  <input class="input" id="desde" name="desde" type="date" value="2026-10-01">
+</div>
+    <div class="field">
+  <label class="field__label" for="hasta">Hasta</label>
+  <input class="input" id="hasta" name="hasta" type="date" value="2026-10-12">
+</div>
+    <div class="field">
+  <label class="field__label" for="sucursal">Sucursal</label>
+  <select class="select" id="sucursal" name="sucursal"><option selected>Todas</option><option>El Tornillo · Centro</option><option>El Tornillo · Belén</option><option>El Tornillo · Envigado</option></select>
+</div>
+    <div class="field">
+  <label class="field__label" for="usuario">Usuario</label>
+  <select class="select" id="usuario" name="usuario"><option selected>Todos</option><option>Andrés Gómez</option><option>Paola Andrea Zapata</option><option>Luis Fernando Ríos</option><option>Juan Camilo Henao</option></select>
+</div>
+    <div class="cluster"><button type="button" class="btn btn--primary"><svg class="icon icon--sm" aria-hidden="true"><use href="#funnel"></use></svg>Ver reporte</button><button type="button" class="btn btn--ghost">Limpiar</button></div>
+  </form>
+</section>
+
+<section class="card">
+  <div class="totals">
+    <div class="totals__item"><span class="totals__label">Compras</span><span class="totals__value">4</span></div>
+    <div class="totals__item"><span class="totals__label">Subtotal sin IVA</span><span class="totals__value">$6.605.462</span></div>
+    <div class="totals__item"><span class="totals__label">IVA</span><span class="totals__value">$1.241.038</span></div>
+    <div class="totals__item"><span class="totals__label">Total comprado</span><span class="totals__value">$7.846.500</span></div>
+  </div>
+  <div class="table-wrap">
+    <table class="table table--stack">
+      <thead><tr><th>Fecha</th><th>Factura del proveedor</th><th>Proveedor</th><th class="text-right">Productos</th><th>Registró</th><th class="text-right">Total</th></tr></thead>
+      <tbody>
+        <tr><td class="" data-label="Fecha">12 oct</td><td class="is-primary" data-label="Factura del proveedor">DFA-4581</td><td class="" data-label="Proveedor">Distribuidora Ferretera Antioquia S.A.S.</td><td class="is-num" data-label="Productos">3</td><td class="" data-label="Registró">Luis Fernando Ríos</td><td class="is-num" data-label="Total">$1.284.000</td></tr>
+        <tr><td class="" data-label="Fecha">10 oct</td><td class="is-primary" data-label="Factura del proveedor">PV-2210</td><td class="" data-label="Proveedor">Pinturas del Valle Ltda.</td><td class="is-num" data-label="Productos">5</td><td class="" data-label="Registró">Luis Fernando Ríos</td><td class="is-num" data-label="Total">$2.156.500</td></tr>
+        <tr><td class="" data-label="Fecha">8 oct</td><td class="is-primary" data-label="Factura del proveedor">EL70-998</td><td class="" data-label="Proveedor">Eléctricos La 70</td><td class="is-num" data-label="Productos">2</td><td class="" data-label="Registró">Juan Camilo Henao</td><td class="is-num" data-label="Total">$486.000</td></tr>
+        <tr><td class="" data-label="Fecha">5 oct</td><td class="is-primary" data-label="Factura del proveedor">DFA-4502</td><td class="" data-label="Proveedor">Distribuidora Ferretera Antioquia S.A.S.</td><td class="is-num" data-label="Productos">7</td><td class="" data-label="Registró">Luis Fernando Ríos</td><td class="is-num" data-label="Total">$3.920.000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination"><span>Del 1 al 12 de octubre de 2026 · 4 registros</span><div class="pagination__pages"><a class="page-btn" href="#" aria-label="Anterior"><svg class="icon icon--sm" aria-hidden="true"><use href="#chevron-left"></use></svg></a><a class="page-btn is-active" href="#" aria-current="page">1</a><a class="page-btn" href="#">2</a><a class="page-btn" href="#">3</a><a class="page-btn" href="#" aria-label="Siguiente"><svg class="icon icon--sm" aria-hidden="true"><use href="#chevron-right"></use></svg></a></div></div>
+</section>
+{% endblock %}
