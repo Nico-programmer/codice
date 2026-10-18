@@ -1,5 +1,6 @@
+from apps.users.mixins import RoleRequiredMixin
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
-class UsersListView(LoginRequiredMixin, TemplateView):
+class UsersListView(RoleRequiredMixin, TemplateView):
+    allowed_roles = ('admin',)
     template_name = 'users/list.html'

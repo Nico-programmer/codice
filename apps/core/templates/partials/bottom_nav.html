@@ -2,8 +2,10 @@
 {% with rol=request.user.rol app=request.resolver_match.app_name page=request.resolver_match.url_name %}
 <nav class="bottom-nav" aria-label="Menú principal">
   <a class="bottom-nav__item{% if app == 'core' %} is-active{% endif %}" href="{% url 'core:home' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="house" %}</span>Inicio</a>
-  {% if rol != 'bodeguero' %}<a class="bottom-nav__item{% if app == 'sales' %} is-active{% endif %}" href="{% url 'sales:new' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="receipt" %}</span>Ventas</a>{% endif %}
-  <a class="bottom-nav__item{% if app == 'inventory' and page != 'movements' %} is-active{% endif %}" href="{% url 'inventory:products' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="package" %}</span>{% if rol == 'vendedor' %}Productos{% else %}Inventario{% endif %}</a>
+  {% if rol == 'admin' or rol == 'vendedor' %}<a class="bottom-nav__item{% if app == 'sales' %} is-active{% endif %}" href="{% url 'sales:new' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="receipt" %}</span>Ventas</a>{% endif %}
+  {% if rol == 'contador' %}<a class="bottom-nav__item{% if app == 'sales' %} is-active{% endif %}" href="{% url 'sales:invoices' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="receipt" %}</span>Facturas</a>
+  <a class="bottom-nav__item{% if app == 'reports' %} is-active{% endif %}" href="{% url 'reports:detail' 'ventas' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="chart-column" %}</span>Reportes</a>
+  {% else %}<a class="bottom-nav__item{% if app == 'inventory' and page != 'movements' %} is-active{% endif %}" href="{% url 'inventory:products' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="package" %}</span>{% if rol == 'vendedor' %}Productos{% else %}Inventario{% endif %}</a>{% endif %}
   {% if rol == 'bodeguero' %}<a class="bottom-nav__item{% if page == 'movements' %} is-active{% endif %}" href="{% url 'inventory:movements' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="arrow-left-right" %}</span>Movimientos</a>{% endif %}
   {% if rol == 'admin' %}
   <a class="bottom-nav__item{% if app == 'reports' %} is-active{% endif %}" href="{% url 'reports:detail' 'ventas' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="chart-column" %}</span>Reportes</a>

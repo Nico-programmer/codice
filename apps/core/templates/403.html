@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Sin permiso{% endblock %}
+
+{% block content %}
+<section class="card">
+  {% url 'core:home' as home_url %}
+  {% include "components/empty_state.html" with icon="lock" title="No tienes permiso para ver esta página" text="Si crees que deberías poder entrar, pídele ayuda al administrador de tu negocio." action_label="Volver a Inicio" action_url=home_url %}
+</section>
+{% endblock %}

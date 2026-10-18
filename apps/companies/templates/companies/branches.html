@@ -3,7 +3,7 @@
 {% block title %}Sucursales{% endblock %}
 
 {% block content %}
-<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'users:list' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#users"></use></svg>Usuarios</a><a class="tab" href="{% url 'companies:list' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#building-2"></use></svg>Empresas</a><a class="tab is-active" href="{% url 'companies:branches' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#store"></use></svg>Sucursales</a></nav>
+<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'users:list' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#users"></use></svg>Usuarios</a>{% if request.user.is_superuser %}<a class="tab" href="{% url 'companies:list' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#building-2"></use></svg>Empresas</a>{% endif %}<a class="tab is-active" href="{% url 'companies:branches' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#store"></use></svg>Sucursales</a></nav>
 <header class="page-header">
   <div>
     <h1 class="page-header__title">Sucursales</h1>

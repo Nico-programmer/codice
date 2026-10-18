@@ -1,8 +1,10 @@
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from apps.users.mixins import RoleRequiredMixin
 
-class NewSaleView(LoginRequiredMixin, TemplateView):
+class NewSaleView(RoleRequiredMixin, TemplateView):
+    allowed_roles = ('admin', 'vendedor')
     template_name = 'sales/new.html'
 
-class InvoicesListView(LoginRequiredMixin, TemplateView):
+class InvoicesListView(RoleRequiredMixin, TemplateView):
+    allowed_roles = ('admin', 'vendedor', 'contador')
     template_name = 'sales/invoices.html'

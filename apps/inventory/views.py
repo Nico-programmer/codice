@@ -1,11 +1,14 @@
+from apps.users.mixins import RoleRequiredMixin
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
-class ProductListView(LoginRequiredMixin, TemplateView):
+class ProductListView(RoleRequiredMixin, TemplateView):
+    allowed_roles = ('admin', 'vendedor', 'bodeguero')
     template_name = 'inventory/products.html'
 
-class ProductCreateView(LoginRequiredMixin, TemplateView):
+class ProductCreateView(RoleRequiredMixin, TemplateView):
+    allowed_roles = ('admin', 'bodeguero')
     template_name = 'inventory/product_form.html'
 
-class MovementListView(LoginRequiredMixin, TemplateView):
+class MovementListView(RoleRequiredMixin, TemplateView):
+    allowed_roles = ('admin', 'bodeguero')
     template_name = 'inventory/movements.html'

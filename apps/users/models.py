@@ -6,6 +6,7 @@ class CustomUser(AbstractUser):
         ADMIN = 'admin', 'Administrador'
         VENDEDOR = 'vendedor', 'Vendedor'
         BODEGUERO = 'bodeguero', 'Bodeguero'
+        CONTADOR = 'contador', 'Contador'
 
     rol = models.CharField(max_length=20, choices=ROL.choices, default=ROL.VENDEDOR)
 

@@ -3,14 +3,14 @@
 {% block title %}Facturas{% endblock %}
 
 {% block content %}
-<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'sales:new' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#shopping-cart"></use></svg>Nueva venta</a><a class="tab is-active" href="{% url 'sales:invoices' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#receipt"></use></svg>Facturas</a></nav>
+<nav class="tabs" aria-label="Secciones">{% if request.user.rol != 'contador' %}<a class="tab" href="{% url 'sales:new' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#shopping-cart"></use></svg>Nueva venta</a>{% endif %}<a class="tab is-active" href="{% url 'sales:invoices' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#receipt"></use></svg>Facturas</a></nav>
 <header class="page-header">
   <div>
     <h1 class="page-header__title">Facturas</h1>
     <p class="page-header__subtitle">Todas las ventas facturadas en El Tornillo · Centro</p>
   </div>
   <div class="page-header__actions">
-    <a class="btn btn--primary btn--lg" href="{% url 'sales:new' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg>Nueva venta</a>
+    {% if request.user.rol != 'contador' %}<a class="btn btn--primary btn--lg" href="{% url 'sales:new' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#plus"></use></svg>Nueva venta</a>{% endif %}
   </div>
 </header>
 
