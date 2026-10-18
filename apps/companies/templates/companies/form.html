@@ -11,57 +11,73 @@
   </div>
 </header>
 
-<form method="post" class="card form" novalidate style="max-width:960px">{% csrf_token %}
-  {% if form.non_field_errors %}
-  <div class="alert alert--error" role="alert">
-    {% include "components/icon.html" with name="circle-alert" class="icon--sm" %}
-    <div class="alert__body">{% for e in form.non_field_errors %}<span>{{ e }}</span>{% endfor %}</div>
-  </div>
-  {% endif %}
+<div class="grid grid--main-side" style="align-items:start">
+  <form method="post" class="card form" novalidate>
+    {% if form.non_field_errors %}
+    <div class="alert alert--error" role="alert">
+      {% include "components/icon.html" with name="circle-alert" class="icon--sm" %}
+      <div class="alert__body">{% for e in form.non_field_errors %}<span>{{ e }}</span>{% endfor %}</div>
+    </div>
+    {% endif %}
 
-  <div class="form-section">
-    <h2 class="form-section__title">Datos del negocio</h2>
-    <div class="form-grid">
-      {% include "components/field.html" with field=form.name label="Nombre del negocio" hint="Así lo conocen sus clientes." %}
-      {% include "components/field.html" with field=form.legal_name label="Razón social" hint="Como aparece en el RUT." %}
-      {% include "components/field.html" with field=form.type_person label="Tipo de persona" %}
-      {% include "components/field.html" with field=form.document label="Tipo de documento" %}
-      {% include "components/field.html" with field=form.number_document label="Número de documento" hint="Solo números, sin puntos ni dígito de verificación." %}
-      <div id="campo-dv">
-        {% include "components/field.html" with field=form.verification_digit label="Dígito de verificación" hint="Solo para NIT." %}
+    <div class="form-section">
+      <h2 class="form-section__title">Datos del negocio</h2>
+      <div class="form-grid">
+        {% include "components/field.html" with field=form.name label="Nombre del negocio" placeholder="Ej. Ferretería El Tornillo" hint="Así lo conocen sus clientes." %}
+        {% include "components/field.html" with field=form.legal_name label="Razón social" placeholder="Ej. Ferretería El Tornillo S.A.S." hint="Como aparece en el RUT." %}
+        {% include "components/field.html" with field=form.type_person label="Tipo de persona" %}
+        {% include "components/field.html" with field=form.document label="Tipo de documento" %}
+        {% include "components/field.html" with field=form.number_document label="Número de documento" placeholder="Ej. 901234567" hint="Solo números, sin puntos ni dígito de verificación." %}
+        <div id="campo-dv">
+          {% include "components/field.html" with field=form.verification_digit label="Dígito de verificación" placeholder="Ej. 8" hint="El número que va después del guion en el NIT." %}
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="form-section">
-    <h2 class="form-section__title">Ubicación y contacto</h2>
-    <div class="form-grid">
-      {% include "components/field.html" with field=form.city label="Ciudad" %}
-      {% include "components/field.html" with field=form.address label="Dirección" %}
-      {% include "components/field.html" with field=form.phone label="Teléfono" %}
-      {% include "components/field.html" with field=form.email label="Correo para facturas" hint="Aquí llegan las respuestas de la DIAN." %}
-    </div>
-  </div>
-
-  <div class="form-section">
-    <h2 class="form-section__title">Suscripción a Codice</h2>
-    <p class="form-section__text">Cuando pase la fecha de vencimiento, los usuarios de esta empresa no podrán entrar.</p>
-    <div class="form-grid">
-      {% for f in form %}{% if f.name == 'start_date_subscription' or f.name == 'end_date_subscription' %}
-      <div class="field{% if f.errors %} field--error{% endif %}">
-        <label class="field__label" for="{{ f.id_for_label }}">{% if f.name == 'start_date_subscription' %}Inicio{% else %}Vencimiento{% endif %}{% if f.field.required %} <span class="field__req">*</span>{% else %} <span class="field__optional">(opcional)</span>{% endif %}</label>
-        <input class="input" type="datetime-local" id="{{ f.id_for_label }}" name="{{ f.html_name }}" value="{{ f.value|date:'Y-m-d\TH:i'|default:f.value|default:'' }}"{% if f.errors %} aria-invalid="true" aria-describedby="{{ f.id_for_label }}-error"{% endif %}>
-        {% for e in f.errors %}<span class="field__error" id="{{ f.id_for_label }}-error">{% include "components/icon.html" with name="circle-alert" class="icon--xs" %}{{ e }}</span>{% endfor %}
+    <div class="form-section">
+      <h2 class="form-section__title">Ubicación y contacto</h2>
+      <div class="form-grid">
+        {% include "components/field.html" with field=form.city label="Ciudad" placeholder="Ej. Medellín" %}
+        {% include "components/field.html" with field=form.address label="Dirección" placeholder="Ej. Cra. 50 #45-12" %}
+        {% include "components/field.html" with field=form.phone label="Teléfono" placeholder="Ej. 604 444 5566" %}
+        {% include "components/field.html" with field=form.email label="Correo para facturas" placeholder="facturas@tunegocio.com" hint="Aquí llegan las respuestas de la DIAN." %}
       </div>
-      {% endif %}{% endfor %}
     </div>
-  </div>
 
-  <div class="cluster" style="justify-content:flex-end">
-    <a class="btn btn--neutral btn--lg" href="{% url 'companies:list' %}">Cancelar</a>
-    <button type="submit" class="btn btn--primary btn--lg">{% include "components/icon.html" with name="check" class="icon--sm" %}Guardar empresa</button>
-  </div>
-</form>
+    <div class="form-section">
+      <h2 class="form-section__title">Suscripción a Codice</h2>
+      <p class="form-section__text">Cuando pase la fecha de vencimiento, los usuarios de esta empresa no podrán entrar.</p>
+      <div class="form-grid">
+        {% for f in form %}{% if f.name == 'start_date_subscription' or f.name == 'end_date_subscription' %}
+        <div class="field{% if f.errors %} field--error{% endif %}">
+          <label class="field__label" for="{{ f.id_for_label }}">{% if f.name == 'start_date_subscription' %}Inicio{% else %}Vencimiento{% endif %}{% if f.field.required %} <span class="field__req">*</span>{% else %} <span class="field__optional">(opcional)</span>{% endif %}</label>
+          <input class="input" type="datetime-local" id="{{ f.id_for_label }}" name="{{ f.html_name }}" value="{{ f.value|date:'Y-m-d\TH:i'|default:f.value|default:'' }}"{% if f.errors %} aria-invalid="true" aria-describedby="{{ f.id_for_label }}-error"{% endif %}>
+          {% for e in f.errors %}<span class="field__error" id="{{ f.id_for_label }}-error">{% include "components/icon.html" with name="circle-alert" class="icon--xs" %}{{ e }}</span>{% endfor %}
+        </div>
+        {% endif %}{% endfor %}
+      </div>
+    </div>
+
+    <div class="cluster" style="justify-content:flex-end">
+      <a class="btn btn--neutral btn--lg" href="{% url 'companies:list' %}">Cancelar</a>
+      <button type="submit" class="btn btn--primary btn--lg">{% include "components/icon.html" with name="check" class="icon--sm" %}Guardar empresa</button>
+    </div>
+    {% csrf_token %}
+  </form>
+
+  <aside class="card">
+    <div class="card__header"><h2 class="card__title">Ten a mano</h2></div>
+    <div class="list">
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="file-text" class="icon--sm" %}</span><div class="list__body"><span class="list__title">El RUT de la empresa</span><span class="list__meta">De ahí salen la razón social, el NIT y el dígito de verificación.</span></div></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="map-pin" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Dirección y ciudad del RUT</span><span class="list__meta">Las legales de la empresa, no las de cada local.</span></div></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="mail" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Un correo que revisen seguido</span><span class="list__meta">Ahí llegan las facturas y las respuestas de la DIAN.</span></div></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="calendar" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Hasta cuándo pagó la suscripción</span><span class="list__meta">Sin fecha de vencimiento, sus usuarios no podrán entrar.</span></div></div>
+      {% if not object %}
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="store" class="icon--sm" %}</span><div class="list__body"><span class="list__title">La sede principal se crea sola</span><span class="list__meta">Con la misma dirección, ciudad y teléfono. Después puedes cambiarla o agregar más sedes.</span></div></div>
+      {% endif %}
+    </div>
+  </aside>
+</div>
 {% endblock %}
 
 {% block extra_js %}

@@ -4,10 +4,11 @@ register = template.Library()
 
 
 @register.filter
-def styled(field):
+def styled(field, placeholder=''):
     """Pinta el campo de un formulario con las clases del diseño (input, select, textarea).
 
     Así los formularios no tienen que repetir attrs={'class': 'input'} en cada widget.
+    Uso: {{ form.name|styled }} o {{ form.name|styled:"Ej. Ferretería El Tornillo" }}
     """
     widget = field.field.widget
     if isinstance(widget, forms.CheckboxInput):
@@ -19,6 +20,8 @@ def styled(field):
     else:
         css = 'input'
     attrs = {'class': css} if css else {}
+    if placeholder and not isinstance(widget, (forms.Select, forms.CheckboxInput)):
+        attrs['placeholder'] = placeholder
     if field.errors:
         attrs['aria-invalid'] = 'true'
         attrs['aria-describedby'] = f'{field.id_for_label}-error'
