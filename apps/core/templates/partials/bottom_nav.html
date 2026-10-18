@@ -1,13 +1,13 @@
 {# Solo visible en celular (≤640px). Máx. 5 elementos. "Más" abre el menú lateral. #}
 {% with rol=request.user.rol %}
 <nav class="bottom-nav" aria-label="Menú principal">
-  <a class="bottom-nav__item{% if active_section == 'inicio' %} is-active{% endif %}" href="{% url 'inicio' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="house" %}</span>Inicio</a>
-  {% if rol != 'bodeguero' %}<a class="bottom-nav__item{% if active_section == 'ventas' %} is-active{% endif %}" href="{% url 'ventas:nueva' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="receipt" %}</span>Ventas</a>{% endif %}
+  <a class="bottom-nav__item{% if active_section == 'inicio' %} is-active{% endif %}" href="{% url 'core:home' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="house" %}</span>Inicio</a>
+  {% comment %} {% if rol != 'bodeguero' %}<a class="bottom-nav__item{% if active_section == 'ventas' %} is-active{% endif %}" href="{% url 'ventas:nueva' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="receipt" %}</span>Ventas</a>{% endif %}
   <a class="bottom-nav__item{% if active_section == 'inventario' and active_tab != 'movimientos' %} is-active{% endif %}" href="{% url 'inventario:productos' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="package" %}</span>{% if rol == 'vendedor' %}Productos{% else %}Inventario{% endif %}</a>
   {% if rol == 'bodeguero' %}<a class="bottom-nav__item{% if active_tab == 'movimientos' %} is-active{% endif %}" href="{% url 'inventario:movimientos' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="arrow-left-right" %}</span>Movimientos</a>{% endif %}
   {% if rol == 'admin' %}
   <a class="bottom-nav__item{% if active_section == 'reportes' %} is-active{% endif %}" href="{% url 'reportes:detalle' 'ventas' %}"><span class="bottom-nav__pill">{% include "components/icon.html" with name="chart-column" %}</span>Reportes</a>
   <button type="button" class="bottom-nav__item{% if active_section == 'admin' %} is-active{% endif %}" data-toggle-nav aria-label="Más opciones: Administración"><span class="bottom-nav__pill">{% include "components/icon.html" with name="ellipsis" %}</span>Más</button>
-  {% endif %}
+  {% endif %} {% endcomment %}
 </nav>
 {% endwith %}

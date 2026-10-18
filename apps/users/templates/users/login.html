@@ -1,0 +1,31 @@
+{% extends "base_auth.html" %}
+
+{% block content %}
+<div class="auth__card">
+  <div class="auth__brand">{% include "partials/logo.html" with gid="logoAuth" size="lg" %}</div>
+  <div>
+    <h1 class="auth__title">Bienvenido de nuevo</h1>
+    <p class="auth__subtitle">Ingresa con tu usuario y contraseña</p>
+  </div>
+  {% if form.non_field_errors %}
+  <div class="alert alert--error" role="alert">
+    {% include "components/icon.html" with name="circle-alert" class="icon--sm" %}
+    <div class="alert__body"><span class="alert__title">El usuario o la contraseña no coinciden</span><span>Revisa que estén bien escritos e inténtalo otra vez.</span></div>
+  </div>
+  {% endif %}
+  <form class="form" method="post" action="{% url 'users:login' %}" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <div class="field">
+      <label class="field__label" for="{{ form.username.id_for_label }}">Usuario</label>
+      <div class="input-wrap">{% include "components/icon.html" with name="user" %}<input class="input" id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" type="text" value="{{ form.username.value|default:'' }}" placeholder="Escribe tu usuario" autocomplete="username" autocapitalize="none" required autofocus></div>
+    </div>
+    <div class="field">
+      <label class="field__label" for="{{ form.password.id_for_label }}">Contraseña</label>
+      <div class="input-wrap input-wrap--action"><input class="input" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" type="password" placeholder="Escribe tu contraseña" autocomplete="current-password" required><button type="button" class="btn btn--ghost btn--icon btn--sm input-wrap__action" aria-label="Mostrar contraseña" data-toggle-password>{% include "components/icon.html" with name="eye" class="icon--sm" %}</button></div>
+    </div>
+    <button type="submit" class="btn btn--primary btn--lg btn--block">Ingresar</button>
+  </form>
+  <p class="auth__foot">¿No puedes entrar? Pídele ayuda al administrador de tu negocio.</p>
+</div>
+{% endblock %}

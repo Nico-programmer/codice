@@ -2,7 +2,7 @@
 <header class="topbar">
   <div class="topbar__left">
     <button type="button" class="btn btn--neutral btn--icon" aria-label="Abrir menú" aria-controls="menu-lateral" data-toggle-nav>{% include "components/icon.html" with name="menu" %}</button>
-    <a href="{% url 'inicio' %}" aria-label="Codice, ir a Inicio">{% include "partials/logo.html" with gid="logoTopbar" size="sm" %}</a>
+    <a href="{% url 'core:home' %}" aria-label="Codice, ir a Inicio">{% include "partials/logo.html" with gid="logoTopbar" size="sm" %}</a>
   </div>
   <div class="topbar__right">
     <button type="button" class="btn btn--neutral btn--icon{% if avisos_nuevos %} btn--has-dot{% endif %}" aria-label="Avisos">{% include "components/icon.html" with name="bell" class="icon--sm" %}{% if avisos_nuevos %}<span class="btn__dot"></span>{% endif %}</button>
