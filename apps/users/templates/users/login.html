@@ -7,6 +7,7 @@
     <h1 class="auth__title">Bienvenido de nuevo</h1>
     <p class="auth__subtitle">Ingresa con tu usuario y contraseña</p>
   </div>
+  {% include "components/messages.html" %}
   {% if form.non_field_errors %}
   <div class="alert alert--error" role="alert">
     {% include "components/icon.html" with name="circle-alert" class="icon--sm" %}

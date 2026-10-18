@@ -58,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Middleware apps
+    'apps.companies.middleware.SubscriptionMiddleware',
 ]
 
 ROOT_URLCONF = 'codice.urls'
