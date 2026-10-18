@@ -1,5 +1,6 @@
 from django import forms
-from .models import Companies
+from django.contrib.auth import get_user_model
+from .models import Companies, Branch
 
 DV_WEIGHTS = (3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71)
 
@@ -32,3 +33,19 @@ class CompanyForm(forms.ModelForm):
             elif digit != nit_verification_digit(number):
                 self.add_error('verification_digit', 'El dígito de verificación no coincide con el NIT.')
         return cleaned
+
+class BranchForm(forms.ModelForm):
+    class Meta:
+        model = Branch
+        fields = ['company', 'headquarters', 'address', 'city', 'phone', 'manager']
+
+    def __init__(self, *args, user, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user.is_superuser:
+            self.fields['company'].queryset = Companies.objects.filter(active=True)
+            company = self.instance.company if self.instance.pk else None
+        else:
+            del self.fields['company'] # El admin de empresa no elige: es la suya
+            company = user.company
+        users = get_user_model().objects.filter(is_active=True, company=company)
+        self.fields['manager'].queryset = users if company else users.none()
