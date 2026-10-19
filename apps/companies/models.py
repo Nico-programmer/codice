@@ -2,6 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 
+from django.db.models import F
+from django.db.models.functions import Lower
+
 class Companies(models.Model):
     class DocumentType(models.TextChoices):
         NIT = 'nit', 'NIT'
@@ -50,3 +53,11 @@ class Branch(models.Model):
 
     def __str__(self):
         return self.headquarters
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower('address'), Lower('city'), F('company'),
+                name='unique_branch_address_per_company',
+            ),
+        ]
