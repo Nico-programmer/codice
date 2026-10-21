@@ -7,7 +7,7 @@
   <div>
     <div class="breadcrumb"><a href="{% url 'companies:branches' %}">Sucursales</a>{% include "components/icon.html" with name="chevron-right" class="icon--xs" %}<span>{% if object %}{{ object.headquarters }}{% else %}Nueva sucursal{% endif %}</span></div>
     <h1 class="page-header__title">{% if object %}Editar sucursal{% else %}Nueva sucursal{% endif %}</h1>
-    <p class="page-header__subtitle">{% if form.company %}Los campos con * son obligatorios.{% else %}Sucursal de {{ request.user.company.name }}. Los campos con * son obligatorios.{% endif %}</p>
+    <p class="page-header__subtitle">{% if 'company' in form.fields %}Los campos con * son obligatorios.{% else %}Sucursal de {{ request.user.company.name }}. Los campos con * son obligatorios.{% endif %}</p>
   </div>
 </header>
 
@@ -23,7 +23,7 @@
     <div class="form-section">
       <h2 class="form-section__title">Datos de la sucursal</h2>
       <div class="form-grid">
-        {% if form.company %}{% include "components/field.html" with field=form.company label="Empresa" span_all=True %}{% endif %}
+        {% if 'company' in form.fields %}{% include "components/field.html" with field=form.company label="Empresa" span_all=True %}{% endif %}
         {% include "components/field.html" with field=form.headquarters label="Nombre" placeholder="Ej. El Tornillo · Belén" hint="Así aparece en el selector de sucursal." %}
         {% include "components/field.html" with field=form.phone label="Teléfono" placeholder="Ej. 604 444 5566" %}
         {% include "components/field.html" with field=form.address label="Dirección" placeholder="Ej. Cl. 30A #76-41" %}
@@ -44,7 +44,7 @@
     <div class="list">
       <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="map-pin" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Dirección del local</span><span class="list__meta">La del punto de venta o bodega, no la del RUT.</span></div></div>
       <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="package" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Cada sucursal lleva su inventario</span><span class="list__meta">Las existencias se cuentan por separado en cada sede.</span></div></div>
-      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="user" class="icon--sm" %}</span><div class="list__body"><span class="list__title">El encargado es opcional</span><span class="list__meta">{% if form.company and not object %}Podrás elegirlo después de guardar, cuando la sucursal ya tenga empresa.{% else %}Debe ser un usuario activo de la misma empresa.{% endif %}</span></div></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="user" class="icon--sm" %}</span><div class="list__body"><span class="list__title">El encargado es opcional</span><span class="list__meta">{% if 'company' in form.fields and not object %}Podrás elegirlo después de guardar, cuando la sucursal ya tenga empresa.{% else %}Debe ser un usuario activo de la misma empresa.{% endif %}</span></div></div>
     </div>
   </aside>
 </div>

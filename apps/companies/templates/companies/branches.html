@@ -17,8 +17,8 @@
 <section class="card">
   {% if branches %}
   <div class="table-wrap">
-    <table class="table table--stack">
-      <thead><tr><th>Sucursal</th><th>Dirección</th><th>Teléfono</th><th>Encargado</th><th>Estado</th><th class="text-right">Acciones</th></tr></thead>
+    <table class="table table--stack" data-datatable>
+      <thead><tr><th>Sucursal</th><th>Dirección</th><th>Teléfono</th><th>Encargado</th><th data-filter>Estado</th><th class="text-right" data-no-sort>Acciones</th></tr></thead>
       <tbody>
         {% for b in branches %}
         <tr{% if not b.active %} class="is-inactive"{% endif %}>

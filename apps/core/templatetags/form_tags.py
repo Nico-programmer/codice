@@ -22,6 +22,11 @@ def styled(field, placeholder=''):
     attrs = {'class': css} if css else {}
     if placeholder and not isinstance(widget, (forms.Select, forms.CheckboxInput)):
         attrs['placeholder'] = placeholder
+    if isinstance(field.field, forms.ModelChoiceField):
+        # Listas que salen de la base de datos (empresa, encargado, sucursal...): con buscador (js/selects.js)
+        attrs['data-searchable'] = ''
+        if field.field.empty_label is not None:
+            field.field.empty_label = 'Elige una opción'
     if field.errors:
         attrs['aria-invalid'] = 'true'
         attrs['aria-describedby'] = f'{field.id_for_label}-error'

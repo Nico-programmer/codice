@@ -17,8 +17,8 @@
 <section class="card">
   {% if companies %}
   <div class="table-wrap">
-    <table class="table table--stack">
-      <thead><tr><th>Empresa</th><th>Documento</th><th>Ciudad</th><th class="text-right">Sucursales</th><th>Suscripción</th><th>Estado</th><th class="text-right">Acciones</th></tr></thead>
+    <table class="table table--stack" data-datatable>
+      <thead><tr><th>Empresa</th><th>Documento</th><th>Ciudad</th><th class="text-right">Sucursales</th><th data-filter>Suscripción</th><th data-filter>Estado</th><th class="text-right" data-no-sort>Acciones</th></tr></thead>
       <tbody>
         {% for c in companies %}
         <tr{% if not c.active %} class="is-inactive"{% endif %}>
@@ -26,7 +26,7 @@
           <td class="tnum" data-label="Documento">{{ c.get_document_display }} {{ c.number_document }}{% if c.verification_digit %}-{{ c.verification_digit }}{% endif %}</td>
           <td class="is-muted" data-label="Ciudad">{{ c.city }}</td>
           <td class="is-num" data-label="Sucursales">{{ c.branches.count }}</td>
-          <td data-label="Suscripción">
+          <td data-label="Suscripción" data-search="{% if c.subscription_active %}Al día{% else %}Vencida{% endif %}" data-order="{{ c.end_date_subscription|date:'Y-m-d H:i'|default:'0' }}">
             {% if c.subscription_active %}<span class="badge badge--success">Al día</span>{% else %}<span class="badge badge--danger">Vencida</span>{% endif %}
             {% if c.end_date_subscription %}<span class="cell-sub">Vence el {{ c.end_date_subscription|date:"j M Y" }}</span>{% else %}<span class="cell-sub">Sin fecha de vencimiento</span>{% endif %}
           </td>
