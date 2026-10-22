@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}{% if object %}Editar usuario{% else %}Nuevo usuario{% endif %}{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div>
+    <div class="breadcrumb"><a href="{% url 'users:list' %}">Usuarios</a>{% include "components/icon.html" with name="chevron-right" class="icon--xs" %}<span>{% if object %}{{ object.get_full_name|default:object.username }}{% else %}Nuevo usuario{% endif %}</span></div>
+    <h1 class="page-header__title">{% if object %}Editar usuario{% else %}Nuevo usuario{% endif %}</h1>
+    <p class="page-header__subtitle">{% if 'company' in form.fields %}Los campos con * son obligatorios.{% else %}Usuario de {{ request.user.company.name }}. Los campos con * son obligatorios.{% endif %}</p>
+  </div>
+</header>
+
+<div class="grid grid--main-side" style="align-items:start">
+  <form method="post" class="card form" novalidate>
+    {% if form.non_field_errors %}
+    <div class="alert alert--error" role="alert">
+      {% include "components/icon.html" with name="circle-alert" class="icon--sm" %}
+      <div class="alert__body">{% for e in form.non_field_errors %}<span>{{ e }}</span>{% endfor %}</div>
+    </div>
+    {% endif %}
+
+    <div class="form-section">
+      <h2 class="form-section__title">Datos de la persona</h2>
+      <div class="form-grid">
+        {% include "components/field.html" with field=form.first_name label="Nombres" placeholder="Ej. Paola Andrea" %}
+        {% include "components/field.html" with field=form.last_name label="Apellidos" placeholder="Ej. Zapata" %}
+        {% include "components/field.html" with field=form.email label="Correo electrónico" placeholder="Ej. paola@eltornillo.com.co" span_all=True %}
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2 class="form-section__title">Acceso</h2>
+      <div class="form-grid">
+        {% include "components/field.html" with field=form.username label="Usuario para ingresar" placeholder="Ej. paola.zapata" hint="Sin espacios. Puede llevar letras, números y . @ + - _" span_all=True %}
+        {% if form.password1 %}
+        {% include "components/field.html" with field=form.password1 label="Contraseña" hint="Mínimo 8 caracteres, que no sea solo números ni parecida al usuario." %}
+        {% include "components/field.html" with field=form.password2 label="Repite la contraseña" hint="Escríbela igual para confirmar." %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2 class="form-section__title">Trabajo</h2>
+      <div class="form-grid">
+        {% if 'company' in form.fields %}{% include "components/field.html" with field=form.company label="Empresa" span_all=True %}{% endif %}
+        {% include "components/field.html" with field=form.rol label="Rol" %}
+        {% include "components/field.html" with field=form.branch label="Sucursal donde trabaja" hint="Déjala vacía si trabaja en todas." %}
+      </div>
+    </div>
+
+    {% if object %}
+    <div class="form-section">
+      <h2 class="form-section__title">Estado</h2>
+      <div class="cluster">{% if object.is_active %}<span class="badge badge--success">Activo</span>{% else %}<span class="badge badge--neutral">Inactivo</span>{% endif %}<span class="text-2">Para quitarle el acceso usa «Inactivar» en la lista.</span></div>
+    </div>
+    {% endif %}
+
+    <div class="cluster" style="justify-content:flex-end">
+      <a class="btn btn--neutral btn--lg" href="{% url 'users:list' %}">Cancelar</a>
+      <button type="submit" class="btn btn--primary btn--lg">{% include "components/icon.html" with name="check" class="icon--sm" %}Guardar usuario</button>
+    </div>
+    {% csrf_token %}
+  </form>
+
+  <aside class="card">
+    <div class="card__header"><h2 class="card__title">Qué puede hacer cada rol</h2></div>
+    <div class="list">
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="lock" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Administrador</span><span class="list__meta">Puede ver y cambiar todo en su empresa.</span></div></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="shopping-cart" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Vendedor</span><span class="list__meta">Vende, factura y consulta productos.</span></div></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="package" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Bodeguero</span><span class="list__meta">Maneja productos y movimientos de inventario.</span></div></div>
+      <div class="list__item"><span class="icon-tile icon-tile--sm">{% include "components/icon.html" with name="file-text" class="icon--sm" %}</span><div class="list__body"><span class="list__title">Contador</span><span class="list__meta">Solo consulta facturas y reportes.</span></div></div>
+    </div>
+  </aside>
+</div>
+{% endblock %}

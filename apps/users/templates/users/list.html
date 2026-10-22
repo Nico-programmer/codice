@@ -3,89 +3,57 @@
 {% block title %}Usuarios{% endblock %}
 
 {% block content %}
-<nav class="tabs" aria-label="Secciones"><a class="tab is-active" href="{% url 'users:list' %}" aria-current="page"><svg class="icon icon--sm" aria-hidden="true"><use href="#users"></use></svg>Usuarios</a>{% if request.user.is_superuser %}<a class="tab" href="{% url 'companies:list' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#building-2"></use></svg>Empresas</a>{% endif %}<a class="tab" href="{% url 'companies:branches' %}"><svg class="icon icon--sm" aria-hidden="true"><use href="#store"></use></svg>Sucursales</a></nav>
+<nav class="tabs" aria-label="Secciones">{% if request.user.is_superuser %}<a class="tab" href="{% url 'companies:list' %}">{% include "components/icon.html" with name="building-2" class="icon--sm" %}Empresas</a>{% endif %}<a class="tab" href="{% url 'companies:branches' %}">{% include "components/icon.html" with name="store" class="icon--sm" %}Sucursales</a><a class="tab is-active" href="{% url 'users:list' %}" aria-current="page">{% include "components/icon.html" with name="users" class="icon--sm" %}Usuarios</a></nav>
 <header class="page-header">
   <div>
     <h1 class="page-header__title">Usuarios</h1>
-    <p class="page-header__subtitle">Personas que pueden entrar a Codice</p>
+    <p class="page-header__subtitle">{% if request.user.is_superuser %}Personas que pueden entrar a Codice, de todas las empresas{% else %}Personas de {{ request.user.company.name }} que pueden entrar a Codice{% endif %}</p>
   </div>
   <div class="page-header__actions">
-    <button type="button" class="btn btn--primary btn--lg" data-open="#drawer-usuario"><svg class="icon icon--sm" aria-hidden="true"><use href="#user-plus"></use></svg>Nuevo usuario</button>
+    <a class="btn btn--primary btn--lg" href="{% url 'users:create' %}">{% include "components/icon.html" with name="user-plus" class="icon--sm" %}Nuevo usuario</a>
   </div>
 </header>
+
 <section class="card">
-  <div class="toolbar">
-    <div class="field toolbar__search"><label class="field__label" for="q">Buscar</label><div class="input-wrap"><svg class="icon" aria-hidden="true"><use href="#search"></use></svg><input class="input" id="q" type="search" placeholder="Nombre o correo"></div></div>
-    <div class="field toolbar__filter"><label class="field__label" for="rol">Rol</label><select class="select" id="rol" name="rol"><option selected>Todos</option><option>Administrador</option><option>Vendedor</option><option>Bodeguero</option></select></div>
-    <div class="field toolbar__filter"><label class="field__label" for="sucursal">Sucursal</label><select class="select" id="sucursal" name="sucursal"><option selected>Todas</option><option>Centro</option><option>Belén</option><option>Envigado</option></select></div>
-    <div class="field toolbar__filter"><label class="field__label" for="estado">Estado</label><select class="select" id="estado" name="estado"><option selected>Todos</option><option>Activos</option><option>Inactivos</option></select></div>
-  </div>
+  {% if users %}
   <div class="table-wrap">
-    <table class="table table--stack">
-      <thead><tr><th>Nombre</th><th>Rol</th><th>Sucursal</th><th>Último ingreso</th><th>Estado</th><th class="text-right">Acciones</th></tr></thead>
+    <table class="table table--stack" data-datatable>
+      <thead><tr><th>Nombre</th><th data-filter>Rol</th><th data-filter>Sucursal</th><th>Último ingreso</th><th data-filter>Estado</th><th class="text-right" data-no-sort>Acciones</th></tr></thead>
       <tbody>
-        <tr><td class="is-primary" data-label="Nombre"><div class="cell-person"><div class="avatar avatar--sm avatar--soft">CR</div><div><span class="cell-main">Carolina Restrepo</span><span class="cell-sub">carolina@eltornillo.com.co</span></div></div></td><td data-label="Rol"><span class="tag tag--plain">Administrador</span></td><td class="is-muted" data-label="Sucursal">Todas</td><td class="is-muted" data-label="Último ingreso">Hoy, 7:58 a. m.</td><td data-label="Estado"><span class="badge badge--success">Activo</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-usuario"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
-        <tr><td class="is-primary" data-label="Nombre"><div class="cell-person"><div class="avatar avatar--sm avatar--soft">AG</div><div><span class="cell-main">Andrés Gómez</span><span class="cell-sub">andres.gomez@eltornillo.com.co</span></div></div></td><td data-label="Rol"><span class="tag tag--plain">Vendedor</span></td><td class="is-muted" data-label="Sucursal">Centro</td><td class="is-muted" data-label="Último ingreso">Hoy, 8:02 a. m.</td><td data-label="Estado"><span class="badge badge--success">Activo</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-usuario"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
-        <tr><td class="is-primary" data-label="Nombre"><div class="cell-person"><div class="avatar avatar--sm avatar--soft">PZ</div><div><span class="cell-main">Paola Andrea Zapata</span><span class="cell-sub">paola.zapata@eltornillo.com.co</span></div></div></td><td data-label="Rol"><span class="tag tag--plain">Vendedor</span></td><td class="is-muted" data-label="Sucursal">Belén</td><td class="is-muted" data-label="Último ingreso">Hoy, 8:15 a. m.</td><td data-label="Estado"><span class="badge badge--success">Activo</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-usuario"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
-        <tr><td class="is-primary" data-label="Nombre"><div class="cell-person"><div class="avatar avatar--sm avatar--soft">LR</div><div><span class="cell-main">Luis Fernando Ríos</span><span class="cell-sub">luis.rios@eltornillo.com.co</span></div></div></td><td data-label="Rol"><span class="tag tag--plain">Bodeguero</span></td><td class="is-muted" data-label="Sucursal">Centro</td><td class="is-muted" data-label="Último ingreso">Hoy, 7:40 a. m.</td><td data-label="Estado"><span class="badge badge--success">Activo</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-usuario"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
-        <tr><td class="is-primary" data-label="Nombre"><div class="cell-person"><div class="avatar avatar--sm avatar--soft">JH</div><div><span class="cell-main">Juan Camilo Henao</span><span class="cell-sub">juan.henao@eltornillo.com.co</span></div></div></td><td data-label="Rol"><span class="tag tag--plain">Bodeguero</span></td><td class="is-muted" data-label="Sucursal">Envigado</td><td class="is-muted" data-label="Último ingreso">Sáb 10 oct</td><td data-label="Estado"><span class="badge badge--success">Activo</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-usuario"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--danger btn--sm" data-open="#confirmar-inactivar"><svg class="icon icon--sm" aria-hidden="true"><use href="#ban"></use></svg>Inactivar</button></div></td></tr>
-        <tr class="is-inactive"><td class="is-primary" data-label="Nombre"><div class="cell-person"><div class="avatar avatar--sm avatar--soft">DM</div><div><span class="cell-main">Diana Marcela Mejía</span><span class="cell-sub">diana.mejia@eltornillo.com.co</span></div></div></td><td data-label="Rol"><span class="tag tag--plain">Vendedor</span></td><td class="is-muted" data-label="Sucursal">Envigado</td><td class="is-muted" data-label="Último ingreso">15 ago 2026</td><td data-label="Estado"><span class="badge badge--neutral">Inactivo</span></td><td class="is-actions"><div class="table__actions"><button type="button" class="btn btn--neutral btn--sm" data-open="#drawer-usuario"><svg class="icon icon--sm" aria-hidden="true"><use href="#pencil"></use></svg>Editar</button><button type="button" class="btn btn--secondary btn--sm"><svg class="icon icon--sm" aria-hidden="true"><use href="#rotate-ccw"></use></svg>Reactivar</button></div></td></tr>
+        {% for u in users %}
+        <tr{% if not u.is_active %} class="is-inactive"{% endif %}>
+          <td class="is-primary" data-label="Nombre" data-search="{{ u.get_full_name }} {{ u.username }} {{ u.email }}">
+            <div class="cell-person">
+              <div class="avatar avatar--sm avatar--soft">{{ u.iniciales|default:"?" }}</div>
+              <div><span class="cell-main">{{ u.get_full_name|default:u.username }}</span><span class="cell-sub">{{ u.username }}{% if u.email %} · {{ u.email }}{% endif %}{% if request.user.is_superuser %} · {{ u.company.name|default:"Sin empresa" }}{% endif %}</span></div>
+            </div>
+          </td>
+          <td data-label="Rol"><span class="tag tag--plain">{{ u.get_rol_display }}</span></td>
+          <td class="is-muted" data-label="Sucursal">{{ u.branch.headquarters|default:"Todas" }}</td>
+          <td class="is-muted" data-label="Último ingreso" data-order="{{ u.last_login|date:'U'|default:'0' }}">{% if u.last_login %}{{ u.last_login|date:"j M Y, g:i a" }}{% else %}Nunca{% endif %}</td>
+          <td data-label="Estado">{% if u.is_active %}<span class="badge badge--success">Activo</span>{% else %}<span class="badge badge--neutral">Inactivo</span>{% endif %}</td>
+          <td class="is-actions">
+            <div class="table__actions">
+              <a class="btn btn--neutral btn--sm" href="{% url 'users:update' u.pk %}">{% include "components/icon.html" with name="pencil" class="icon--sm" %}Editar</a>
+              {% if u.pk != request.user.pk %}
+              <form method="post" action="{% url 'users:toggle_active' u.pk %}"{% if u.is_active %} data-confirm="¿Inactivar a {{ u.get_full_name|default:u.username }}?" data-confirm-text="No podrá entrar a Codice. Sus ventas y movimientos se conservan, y puedes reactivarlo cuando quieras." data-confirm-button="Sí, inactivar"{% endif %}>{% csrf_token %}
+                {% if u.is_active %}
+                <button type="submit" class="btn btn--danger btn--sm">{% include "components/icon.html" with name="ban" class="icon--sm" %}Inactivar</button>
+                {% else %}
+                <button type="submit" class="btn btn--secondary btn--sm">{% include "components/icon.html" with name="rotate-ccw" class="icon--sm" %}Reactivar</button>
+                {% endif %}
+              </form>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
+  {% else %}
+  {% url 'users:create' as create_url %}
+  {% include "components/empty_state.html" with icon="users" title="Todavía no hay usuarios" text="Crea los usuarios de tus vendedores, bodegueros y contador." action_label="Nuevo usuario" action_url=create_url %}
+  {% endif %}
 </section>
-{% endblock %}
-
-{% block overlays %}
-<div class="overlay" id="drawer-usuario" role="dialog" aria-modal="true" aria-labelledby="drawer-usuario-title">
-  <aside class="drawer">
-    <div class="drawer__header">
-      <div><h2 class="drawer__title" id="drawer-usuario-title">Editar usuario</h2><p class="drawer__subtitle">Paola Andrea Zapata</p></div>
-      <button type="button" class="btn btn--icon btn--sm btn--neutral" aria-label="Cerrar" title="Cerrar" data-close><svg class="icon icon--sm" aria-hidden="true"><use href="#x"></use></svg></button>
-    </div>
-    <form method="post" class="drawer__body" novalidate>{% csrf_token %}
-      <div class="alert alert--error" role="alert"><svg class="icon icon--sm" aria-hidden="true"><use href="#circle-alert"></use></svg><div class="alert__body"><span class="alert__title">Revisa 1 dato antes de guardar</span></div></div>
-      <div class="field">
-  <label class="field__label" for="u-nombre">Nombre completo <span class="field__req">*</span></label>
-  <input class="input" id="u-nombre" name="u-nombre" type="text" value="Paola Andrea Zapata">
-</div>
-      <div class="field field--error">
-  <label class="field__label" for="u-correo">Correo electrónico <span class="field__req">*</span></label>
-  <input class="input" id="u-correo" name="u-correo" type="email" value="andres.gomez@eltornillo.com.co" aria-invalid="true" aria-describedby="u-correo-error">
-  <span class="field__error" id="u-correo-error"><svg class="icon icon--xs" aria-hidden="true"><use href="#circle-alert"></use></svg>Este correo ya lo usa otro usuario. Escribe uno diferente.</span>
-</div>
-      <div class="field">
-  <label class="field__label" for="u-celular">Celular <span class="field__optional">(opcional)</span></label>
-  <input class="input" id="u-celular" name="u-celular" type="tel" value="310 456 7890">
-</div>
-      <div class="field"><span class="field__label">Rol <span class="field__req">*</span></span>
-        <div class="stack stack--sm" role="radiogroup">
-          <label class="choice"><input class="choice__input" type="radio" name="rol"><span class="choice__box"><span class="choice__title">Administrador</span><span class="choice__desc">Puede ver y cambiar todo</span></span></label>
-          <label class="choice"><input class="choice__input" type="radio" name="rol" checked><span class="choice__box"><span class="choice__title">Vendedor</span><span class="choice__desc">Vende, factura y consulta productos</span></span></label>
-          <label class="choice"><input class="choice__input" type="radio" name="rol"><span class="choice__box"><span class="choice__title">Bodeguero</span><span class="choice__desc">Maneja productos y movimientos de inventario</span></span></label>
-        </div>
-      </div>
-      <div class="field">
-  <label class="field__label" for="u-sucursal">Sucursal donde trabaja <span class="field__req">*</span></label>
-  <select class="select" id="u-sucursal" name="u-sucursal"><option>El Tornillo · Centro</option><option selected>El Tornillo · Belén</option><option>El Tornillo · Envigado</option><option>Todas las sucursales</option></select>
-</div>
-      <div class="form-section"><h3 class="form-section__title">Estado</h3><div class="cluster"><span class="badge badge--success">Activo</span><span class="text-2">Para quitarle el acceso usa «Inactivar» en la lista.</span></div></div>
-    </form>
-    <div class="drawer__footer">
-      <button type="button" class="btn btn--neutral btn--lg" data-close>Cancelar</button>
-      <button type="button" class="btn btn--primary btn--lg"><svg class="icon icon--sm" aria-hidden="true"><use href="#check"></use></svg>Guardar cambios</button>
-    </div>
-  </aside>
-</div>
-<div class="overlay overlay--center" id="confirmar-inactivar" role="alertdialog" aria-modal="true" aria-labelledby="confirmar-inactivar-title">
-  <div class="modal modal--center">
-    <div class="modal__icon icon-tile--danger"><svg class="icon" aria-hidden="true"><use href="#ban"></use></svg></div>
-    <h2 class="modal__title" id="confirmar-inactivar-title">¿Inactivar a Juan Camilo Henao?</h2>
-    <p class="modal__text">No podrá entrar a Codice. Sus ventas y movimientos se conservan, y puedes reactivarlo cuando quieras.</p>
-    <div class="modal__actions">
-      <button type="button" class="btn btn--neutral btn--lg" data-close>Cancelar</button>
-      <button type="button" class="btn btn--danger-solid btn--lg" data-close>Sí, inactivar</button>
-    </div>
-  </div>
-</div>
 {% endblock %}

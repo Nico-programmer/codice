@@ -27,6 +27,9 @@ table.dataTable thead > tr > th.dt-orderable-asc:hover,
 table.dataTable thead > tr > th.dt-orderable-desc:hover { outline: none; color: var(--c-text); }
 table.dataTable > tbody > tr > td, table.dataTable > tbody > tr > th { border-top: 1px solid var(--c-border-soft); }
 table.dataTable.table > tbody > tr:hover > * { box-shadow: none; }
+/* DataTables alinea a la derecha lo que detecta como número o fecha; en Codice solo se alinea a la derecha lo marcado */
+table.dataTable th.dt-type-numeric, table.dataTable td.dt-type-numeric,
+table.dataTable th.dt-type-date, table.dataTable td.dt-type-date { text-align: left; }
 table.dataTable th.text-right, table.dataTable td.is-num { text-align: right; }
 
 /* Información y paginación */

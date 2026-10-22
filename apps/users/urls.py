@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import UsersListView
+from .views import UsersListView, UserCreateView, UserUpdateView, UserToggleActiveView
 
 app_name = 'users'
 
@@ -10,4 +10,7 @@ urlpatterns = [
     path('salir/', LogoutView.as_view(next_page='users:login'), name='logout'),
 
     path('administracion/usuarios/', UsersListView.as_view(), name='list'),
+    path('administracion/usuarios/nuevo/', UserCreateView.as_view(), name='create'),
+    path('administracion/usuarios/<int:pk>/editar/', UserUpdateView.as_view(), name='update'),
+    path('administracion/usuarios/<int:pk>/estado/', UserToggleActiveView.as_view(), name='toggle_active'),
 ]

@@ -3,7 +3,7 @@
 {% block title %}Empresas{% endblock %}
 
 {% block content %}
-<nav class="tabs" aria-label="Secciones"><a class="tab" href="{% url 'users:list' %}">{% include "components/icon.html" with name="users" class="icon--sm" %}Usuarios</a><a class="tab is-active" href="{% url 'companies:list' %}" aria-current="page">{% include "components/icon.html" with name="building-2" class="icon--sm" %}Empresas</a><a class="tab" href="{% url 'companies:branches' %}">{% include "components/icon.html" with name="store" class="icon--sm" %}Sucursales</a></nav>
+<nav class="tabs" aria-label="Secciones">{% if request.user.is_superuser %}<a class="tab is-active" href="{% url 'companies:list' %}" aria-current="page">{% include "components/icon.html" with name="building-2" class="icon--sm" %}Empresas</a>{% endif %}<a class="tab" href="{% url 'companies:branches' %}">{% include "components/icon.html" with name="store" class="icon--sm" %}Sucursales</a><a class="tab" href="{% url 'users:list' %}">{% include "components/icon.html" with name="users" class="icon--sm" %}Usuarios</a></nav>
 <header class="page-header">
   <div>
     <h1 class="page-header__title">Empresas</h1>
