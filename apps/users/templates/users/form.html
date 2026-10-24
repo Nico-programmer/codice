@@ -34,8 +34,8 @@
       <div class="form-grid">
         {% include "components/field.html" with field=form.username label="Usuario para ingresar" placeholder="Ej. paola.zapata" hint="Sin espacios. Puede llevar letras, números y . @ + - _" span_all=True %}
         {% if form.password1 %}
-        {% include "components/field.html" with field=form.password1 label="Contraseña" hint="Mínimo 8 caracteres, que no sea solo números ni parecida al usuario." %}
-        {% include "components/field.html" with field=form.password2 label="Repite la contraseña" hint="Escríbela igual para confirmar." %}
+        {% include "components/field.html" with field=form.password1 label="Contraseña" password=True hint="Mínimo 8 caracteres, que no sea solo números ni parecida al usuario." %}
+        {% include "components/field.html" with field=form.password2 label="Repite la contraseña" password=True hint="Escríbela igual para confirmar." %}
         {% endif %}
       </div>
     </div>

@@ -1,12 +1,13 @@
 {% comment %}
   Campo de formulario Django con el estilo del diseño.
   Uso: {% include "components/field.html" with field=form.name hint="..." placeholder="Ej. ..." span_all=True %}
+  password=True agrega el botón del ojo para ver u ocultar la contraseña.
   La clase input / select / textarea la pone el filtro |styled (apps/core/templatetags/form_tags.py).
 {% endcomment %}
 {% load form_tags %}
 <div class="field{% if field.errors %} field--error{% endif %}{% if span_all %} span-all{% endif %}">
   <label class="field__label" for="{{ field.id_for_label }}">{{ label|default:field.label }}{% if field.field.required %} <span class="field__req">*</span>{% else %} <span class="field__optional">(opcional)</span>{% endif %}</label>
-  {% with ph=placeholder|default:"" %}{{ field|styled:ph }}{% endwith %}
+  {% if password %}<div class="input-wrap input-wrap--action">{% endif %}{% with ph=placeholder|default:"" %}{{ field|styled:ph }}{% endwith %}{% if password %}<button type="button" class="btn btn--ghost btn--icon btn--sm input-wrap__action" aria-label="Mostrar contraseña" data-toggle-password>{% include "components/icon.html" with name="eye" class="icon--sm" %}</button></div>{% endif %}
   {% if hint or field.help_text %}<span class="field__hint">{{ hint|default:field.help_text }}</span>{% endif %}
   {% for e in field.errors %}<span class="field__error" id="{{ field.id_for_label }}-error">{% include "components/icon.html" with name="circle-alert" class="icon--xs" %}{{ e }}</span>{% endfor %}
 </div>
