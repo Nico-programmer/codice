@@ -1,6 +1,7 @@
 from apps.users.mixins import RoleRequiredMixin
 
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -48,8 +49,14 @@ class UserUpdateView(RoleRequiredMixin, UserFormMixin, UpdateView):
     form_class = UserUpdateForm
 
     def form_valid(self, form):
+        response = super().form_valid(form)
+
+        # Si el admin cambió su propia contraseña, sigue con la sesión abierta
+        if form.cleaned_data.get('new_password1') and self.object.pk == self.request.user.pk:
+            update_session_auth_hash(self.request, self.object)
+
         messages.success(self.request, f'Los cambios de {form.instance.username} quedaron guardados.')
-        return super().form_valid(form)
+        return response
 
 class UserToggleActiveView(RoleRequiredMixin, UserScopeMixin, View):
     allowed_roles = ('admin',)

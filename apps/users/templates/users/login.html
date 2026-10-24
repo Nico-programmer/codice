@@ -9,10 +9,26 @@
   </div>
   {% include "components/messages.html" %}
   {% if form.non_field_errors %}
-  <div class="alert alert--error" role="alert">
+  {# Se muestra con SweetAlert; si no carga, queda este aviso en la página #}
+  <div class="alert alert--error" role="alert" id="error-ingreso">
     {% include "components/icon.html" with name="circle-alert" class="icon--sm" %}
     <div class="alert__body"><span class="alert__title">El usuario o la contraseña no coinciden</span><span>Revisa que estén bien escritos e inténtalo otra vez.</span></div>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (!window.Swal) return;
+      document.getElementById("error-ingreso").hidden = true;
+      Swal.fire({
+        icon: "error",
+        title: "El usuario o la contraseña no coinciden",
+        text: "Revisa que estén bien escritos e inténtalo otra vez.",
+        confirmButtonText: "Entendido",
+        buttonsStyling: false,
+        customClass: { popup: "swal-codice", confirmButton: "btn btn--primary btn--lg" },
+        didClose: function () { document.getElementById("{{ form.password.id_for_label }}").focus(); }
+      });
+    });
+  </script>
   {% endif %}
   <form class="form" method="post" action="{% url 'users:login' %}" novalidate>
     {% csrf_token %}

@@ -1,5 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import password_validation
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from apps.companies.forms import capitalize_first
 from apps.companies.models import Branch, Companies
@@ -14,6 +15,12 @@ def is_last_active_admin(user):
 
     others = CustomUser.objects.filter(company_id=user.company_id, rol=CustomUser.ROL.ADMIN, is_active=True)
     return not others.exclude(pk=user.pk).exists()
+
+class LoginForm(AuthenticationForm):
+    """ El usuario se busca en minúscula: "Juanjose" y "juanjose" son el mismo. """
+
+    def clean_username(self):
+        return self.cleaned_data['username'].strip().lower()
 
 class UserScopeFormMixin:
     """ Limita empresa y sucursal según quién está llenando el formulario. """
@@ -41,6 +48,13 @@ class UserScopeFormMixin:
 
     def clean_last_name(self):
         return capitalize_first(self.cleaned_data['last_name'])
+
+    def clean_username(self):
+        username = self.cleaned_data['username'].strip().lower()
+
+        if CustomUser.objects.filter(username__iexact=username).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError('Ese usuario ya existe. Escribe otro.')
+        return username
 
     def clean_email(self):
         return self.cleaned_data['email'].strip().lower()
@@ -94,9 +108,37 @@ class UserCreateForm(UserScopeFormMixin, UserCreationForm):
         self.setup_scope(user)
 
 class UserUpdateForm(UserScopeFormMixin, forms.ModelForm):
+    new_password1 = forms.CharField(label='Nueva contraseña', required=False, strip=False, widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))
+    new_password2 = forms.CharField(label='Repite la nueva contraseña', required=False, strip=False, widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))
+
     class Meta:
         model = CustomUser
         fields = USER_FIELDS
+
+    def clean(self):
+        cleaned = super().clean()
+        password1 = cleaned.get('new_password1')
+        password2 = cleaned.get('new_password2')
+
+        # Vacías las dos: no se cambia la contraseña
+        if password1 or password2:
+            if password1 != password2:
+                self.add_error('new_password2', 'Las dos contraseñas no coinciden.')
+            else:
+                try:
+                    password_validation.validate_password(password1, self.instance)
+                except forms.ValidationError as error:
+                    self.add_error('new_password1', error)
+        return cleaned
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        if self.cleaned_data.get('new_password1'):
+            user.set_password(self.cleaned_data['new_password1'])
+        if commit:
+            user.save()
+        return user
 
     def __init__(self, *args, user, **kwargs):
         super().__init__(*args, **kwargs)
